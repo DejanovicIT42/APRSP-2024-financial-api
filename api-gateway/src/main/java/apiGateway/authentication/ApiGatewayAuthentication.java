@@ -3,6 +3,7 @@ package apiGateway.authentication;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,23 +23,6 @@ import authentication.dtos.CustomUserDto;
 @Configuration
 @EnableWebFluxSecurity
 public class ApiGatewayAuthentication {
-
-	
-	/*@Bean
-	public MapReactiveUserDetailsService userDetailsService(BCryptPasswordEncoder encoder) {
-		List<UserDetails> users = new ArrayList<>();
-		users.add(User.withUsername("user")
-				.password(encoder.encode("password1"))
-				.roles("USER")
-				.build());
-		
-		users.add(User.withUsername("admin")
-				.password(encoder.encode("password2"))
-				.roles("ADMIN")
-				.build());
-		
-		return new MapReactiveUserDetailsService(users);
-	}*/
 	
 	@Bean
 	public MapReactiveUserDetailsService userDetailsService(BCryptPasswordEncoder encoder) {
@@ -46,9 +30,8 @@ public class ApiGatewayAuthentication {
 		List<CustomUserDto> usersFromDatabase;
 		
 		ResponseEntity<CustomUserDto[]> response = 
-		new RestTemplate().getForEntity("http://localhost:8770/users", CustomUserDto[].class);
-		
-		usersFromDatabase = Arrays.asList(response.getBody());
+		new RestTemplate().getForEntity("http://localhost:8770/users-service/users", CustomUserDto[].class);
+		usersFromDatabase = Arrays.asList(Objects.requireNonNull(response.getBody()));
 		
 		for(CustomUserDto cud: usersFromDatabase) {
 			users.add(User.withUsername(cud.getEmail())
@@ -56,7 +39,6 @@ public class ApiGatewayAuthentication {
 					.roles(cud.getRole())
 					.build());
 		}
-		
 		
 		return new MapReactiveUserDetailsService(users);
 	}

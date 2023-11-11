@@ -19,7 +19,6 @@ public class ApiGatewayConfiguration {
 		
 		return builder
 				.routes()
-				.route(p -> p.path("/@Depaiva1997").uri("http://youtube.com"))
 				.route(p -> p.path("/currency-exchange/**").uri("lb://currency-exchange"))
 				.route(p -> p.path("/currency-conversion-feign").uri("lb://currency-conversion"))
 				.route(p -> p.path("/currency-conversion")

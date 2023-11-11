@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   currency-exchange:
-    image: sephyron/2023-currency-exchange:1.0.0
+    image: elenadejanovic/2023-currency-exchange:1.0.0
     mem_limit: 700m
     ports:
       - "8000:8000"
@@ -14,7 +14,7 @@ services:
       EUREKA.CLIENT.SERVICE-URL.DEFAULTZONE: http://naming-server:8761/eureka     
       
   naming-server:
-    image: sephyron/naming-server:0.0.1-SNAPSHOT
+    image: elenadejanovic/naming-server:0.0.1-SNAPSHOT
     mem_limit: 700m
     ports:
       - "8761:8761"
