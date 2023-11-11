@@ -24,6 +24,7 @@ public class UserController {
 	
 	@PostMapping("/users-service/users")
 	public ResponseEntity<CustomUser> createUser(@RequestBody CustomUser user) {
+
 		CustomUser createdUser = repo.save(user);
 		return ResponseEntity.status(201).body(createdUser);
 	}
