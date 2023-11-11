@@ -1,8 +1,33 @@
 version: '3.7'
 
 services:
+  api-gateway:
+    image: elenadejanovic/api-gateway:1.0.0
+    mem_limit: 700m
+    ports:
+      - "8765:8765"
+    networks:
+      - currency-network
+    depends_on:
+      - naming-server
+      - user-service
+    environment:
+      EUREKA.CLIENT.SERVICE-URL.DEFAULTZONE: http://naming-server:8761/eureka
+
+  currency-conversion:
+    image: elenadejanovic/currency-conversion:1.0.0
+    mem_limit: 700m
+    ports:
+      - "8100:8100"
+    networks:
+      - currency-network
+    depends_on:
+      - naming-server
+    environment:
+      EUREKA.CLIENT.SERVICE-URL.DEFAULTZONE: http://naming-server:8761/eureka
+
   currency-exchange:
-    image: elenadejanovic/2023-currency-exchange:1.0.0
+    image: elenadejanovic/currency-exchange:1.0.0
     mem_limit: 700m
     ports:
       - "8000:8000"
@@ -14,12 +39,24 @@ services:
       EUREKA.CLIENT.SERVICE-URL.DEFAULTZONE: http://naming-server:8761/eureka     
       
   naming-server:
-    image: elenadejanovic/naming-server:0.0.1-SNAPSHOT
+    image: elenadejanovic/naming-server:0.0.1
     mem_limit: 700m
     ports:
       - "8761:8761"
     networks:
-      - currency-network        
+      - currency-network
+
+  user-service:
+    image: elenadejanovic/user-service:1.0.0
+    mem_limit: 700m
+    ports:
+      - "8770:8770"
+    networks:
+      - currency-network
+    depends_on:
+      - naming-server
+    environment:
+      EUREKA.CLIENT.SERVICE-URL.DEFAULTZONE: http://naming-server:8761/eureka
  
 networks:
   currency-network:
