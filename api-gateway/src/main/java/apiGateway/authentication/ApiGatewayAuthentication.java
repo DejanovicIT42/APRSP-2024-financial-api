@@ -58,6 +58,7 @@ public class ApiGatewayAuthentication {
 		.authorizeExchange().pathMatchers(HttpMethod.POST).hasAnyRole("ADMIN","OWNER")
 		.pathMatchers("/currency-exchange/**").permitAll()
 		.pathMatchers(HttpMethod.POST, "/users-service/**").hasAnyRole("ADMIN","OWNER")
+		.pathMatchers(HttpMethod.DELETE, "/users-service/**").hasRole("OWNER")
 		.pathMatchers("/users-service/**").permitAll()
 		.pathMatchers("/currency-conversion").hasAnyRole("ADMIN","USER")
 		.and()
