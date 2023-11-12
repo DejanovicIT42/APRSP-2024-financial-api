@@ -17,7 +17,6 @@ public class CustomUser {
 	@Column(nullable = false, columnDefinition = "VARCHAR(20) CHECK(role IN('ADMIN','USER','OWNER'))")
 	private String role;
 
-	
 	//KONSTRUKTOR I GET I SET METODE
 	public CustomUser() {
 
