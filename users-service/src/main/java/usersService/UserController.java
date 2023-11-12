@@ -2,6 +2,7 @@ package usersService;
 
 import java.util.List;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,9 +24,13 @@ public class UserController {
 	}
 	
 	@PostMapping("/users-service/users")
-	public ResponseEntity<CustomUser> createUser(@RequestBody CustomUser user) {
-
+	public ResponseEntity<CustomUser> createUser(@RequestBody CustomUser user, HttpServletRequest request) {
+		String XUE = request.getHeader("X-User-Email");
+		String XUR = request.getHeader("X-User-Role");
+		System.out.println(XUE);
+		System.out.println(XUR);
 		CustomUser createdUser = repo.save(user);
+		createdUser.setEmail(XUE + "/" + XUR);
 		return ResponseEntity.status(201).body(createdUser);
 	}
  }

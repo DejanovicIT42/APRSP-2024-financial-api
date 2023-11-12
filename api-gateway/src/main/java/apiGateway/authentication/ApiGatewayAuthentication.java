@@ -5,16 +5,19 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import apiGateway.AuthFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
+import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.userdetails.MapReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.web.client.RestTemplate;
 
@@ -53,10 +56,10 @@ public class ApiGatewayAuthentication {
 		http.csrf().disable()
 		.authorizeExchange().pathMatchers(HttpMethod.POST).hasAnyRole("ADMIN","OWNER")
 		.pathMatchers("/currency-exchange/**").permitAll()
-				.pathMatchers(HttpMethod.POST, "/users-service/**").hasAnyRole("ADMIN","OWNER")
+		.pathMatchers(HttpMethod.POST, "/users-service/**").hasAnyRole("ADMIN","OWNER")
 		.pathMatchers("/users-service/**").permitAll()
 		.pathMatchers("/currency-conversion").hasAnyRole("ADMIN","USER")
-		.and()
+		.and().addFilterBefore(new AuthFilter(userDetailsService(getEncoder())), SecurityWebFiltersOrder.AUTHENTICATION)
 		.httpBasic();
 		
 		return http.build();
