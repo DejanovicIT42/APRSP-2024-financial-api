@@ -2,8 +2,10 @@ version: '3.7'
 
 services:
   api-gateway:
-    image: elenadejanovic/api-gateway:1.0.0
-    mem_limit: 700m
+    image: elenadejanovic/api-gateway:latest
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
     ports:
       - "8765:8765"
     networks:
@@ -16,7 +18,6 @@ services:
 
   currency-conversion:
     image: elenadejanovic/currency-conversion:1.0.0
-    mem_limit: 700m
     ports:
       - "8100:8100"
     networks:
@@ -28,7 +29,6 @@ services:
 
   currency-exchange:
     image: elenadejanovic/currency-exchange:1.0.0
-    mem_limit: 700m
     ports:
       - "8000:8000"
     networks:
@@ -40,7 +40,9 @@ services:
       
   naming-server:
     image: elenadejanovic/naming-server:0.0.1
-    mem_limit: 700m
+    build:
+      context: ./namingServer
+      dockerfile: Dockerfile
     ports:
       - "8761:8761"
     networks:
@@ -48,7 +50,6 @@ services:
 
   user-service:
     image: elenadejanovic/user-service:1.0.0
-    mem_limit: 700m
     ports:
       - "8770:8770"
     networks:
