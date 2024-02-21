@@ -26,9 +26,9 @@ public class UserController {
 	
 	@PostMapping()
 	public ResponseEntity<CustomUser> createUser(@RequestBody CustomUser user, HttpServletRequest request) {
-		String requestRole = request.getHeader("X-User-Role");
+		Role requestRole = Role.valueOf(request.getHeader("X-User-Role").substring(5)); //ko je zatrazio request
 
-		if(Objects.equals(user.getRole(), "ADMIN") && Objects.equals(requestRole, "ROLE_ADMIN")) {
+		if(user.getRole() == Role.ADMIN && requestRole == Role.ADMIN) {
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
 
@@ -38,6 +38,31 @@ public class UserController {
 
 		CustomUser createdUser = repo.save(user);
 		return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
+	}
+
+	@PutMapping("/update/{email}")
+	public ResponseEntity<CustomUser> updateUser(@RequestBody CustomUser updateUser, @PathVariable String email, HttpServletRequest request) {
+
+		if(!Objects.equals(updateUser.getEmail(), email)) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		Role requestRole = Role.valueOf(request.getHeader("X-User-Role").substring(5));
+		Optional<CustomUser> checkUser = repo.findByEmail(email);
+
+		if(checkUser.isEmpty())
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+		if(requestRole == Role.ADMIN && updateUser.getRole() != Role.USER){
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		if(requestRole != Role.OWNER) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		CustomUser updatedUser = repo.save(updateUser);
+		return new ResponseEntity<>(updatedUser, HttpStatus.OK);
 	}
 
 	@DeleteMapping("/delete/{email}")

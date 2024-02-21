@@ -1,4 +1,4 @@
-insert into custom_user(id,email,password,role)
+insert into custom_user(id, email, password, role)
 values(1,'elena@uns.ac.rs','password707','OWNER');
 
 insert into custom_user(id,email,password,role)

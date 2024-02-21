@@ -1,5 +1,6 @@
 version: '3.7'
 
+name: agilne-2024-elena-dejanovic
 services:
   api-gateway:
     image: elenadejanovic/api-gateway:latest

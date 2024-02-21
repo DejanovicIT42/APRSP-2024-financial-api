@@ -1,8 +1,7 @@
 package usersService.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import usersService.Role;
 
 @Entity(name = "CUSTOM_USER")
 public class CustomUser {
@@ -14,8 +13,9 @@ public class CustomUser {
 	private String email;
 	@Column(nullable = false)
 	private String password;
-	@Column(nullable = false, columnDefinition = "VARCHAR(20) CHECK(role IN('ADMIN','USER','OWNER'))")
-	private String role;
+
+	@Enumerated(EnumType.STRING)
+	private Role role;
 
 	//KONSTRUKTOR I GET I SET METODE
 	public CustomUser() {
@@ -46,11 +46,11 @@ public class CustomUser {
 		this.password = password;
 	}
 
-	public String getRole() {
+	public Role getRole() {
 		return role;
 	}
 
-	public void setRole(String role) {
+	public void setRole(Role role) {
 		this.role = role;
 	}
 

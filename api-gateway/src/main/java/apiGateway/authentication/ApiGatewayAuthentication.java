@@ -40,7 +40,7 @@ public class ApiGatewayAuthentication {
 		for(CustomUserDto cud: usersFromDatabase) {
 			users.add(User.withUsername(cud.getEmail())
 					.password(encoder.encode(cud.getPassword()))
-					.roles(cud.getRole())
+					.roles(cud.getRole().name())
 					.build());
 		}
 		
@@ -55,13 +55,15 @@ public class ApiGatewayAuthentication {
 	@Bean
 	public SecurityWebFilterChain filterChain(ServerHttpSecurity http) throws Exception{
 		http.csrf().disable()
-		.authorizeExchange().pathMatchers(HttpMethod.POST).hasAnyRole("ADMIN","OWNER")
-		.pathMatchers("/currency-exchange/**").permitAll()
-		.pathMatchers(HttpMethod.POST, "/users-service/**").hasAnyRole("ADMIN","OWNER")
-		.pathMatchers(HttpMethod.DELETE, "/users-service/**").hasRole("OWNER")
-		.pathMatchers("/users-service/**").permitAll()
-		.pathMatchers("/currency-conversion").hasAnyRole("ADMIN","USER")
-		.and()
+		.authorizeExchange()
+				.pathMatchers("/currency-exchange/**").permitAll()
+				.pathMatchers(HttpMethod.GET, "/users-service/**").hasAnyRole("ADMIN", "OWNER")
+				.pathMatchers(HttpMethod.POST, "/users-service/**").hasAnyRole("ADMIN","OWNER")
+				.pathMatchers(HttpMethod.PUT, "/users-service/**").hasAnyRole("ADMIN","OWNER")
+				.pathMatchers(HttpMethod.DELETE, "/users-service/**").hasRole("OWNER")
+				.pathMatchers("/users-service/**").permitAll()
+				.pathMatchers("/currency-conversion").hasAnyRole("ADMIN","USER")
+				.and()
 		.httpBasic().and()
 				//This adds a filter to the filter chain. The filter is defined as a lambda function that takes two parameters: exchange and chain.
 				// The exchange represents the current server exchange, and chain represents the remaining filter chain.

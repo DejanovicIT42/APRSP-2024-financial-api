@@ -4,7 +4,8 @@ public class CustomUserDto {
 
 	private String email;
 	private String password;
-	private String role;
+
+	private Role role;
 
 	//GET I SET METODE
 	public String getEmail() {
@@ -23,11 +24,11 @@ public class CustomUserDto {
 		this.password = password;
 	}
 
-	public String getRole() {
+	public Role getRole() {
 		return role;
 	}
 
-	public void setRole(String role) {
+	public void setRole(Role role) {
 		this.role = role;
 	}
 
