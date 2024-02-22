@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import usersService.miloradEror.CustomExceptions;
 import usersService.model.CustomUser;
 
 @RestController
@@ -25,15 +26,21 @@ public class UserController {
 	}
 	
 	@PostMapping()
-	public ResponseEntity<CustomUser> createUser(@RequestBody CustomUser user, HttpServletRequest request) {
-		Role requestRole = Role.valueOf(request.getHeader("X-User-Role").substring(5)); //ko je zatrazio request
-
-		if(user.getRole() == Role.ADMIN && requestRole == Role.ADMIN) {
-			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+	public ResponseEntity<CustomUser> createUser(@RequestBody CustomUser user, HttpServletRequest request) throws Exception {
+		Role requestRole;
+		try {
+			requestRole = Role.valueOf(request.getHeader("X-User-Role").substring(5)); //ko je zatrazio request
+		}
+		catch (Exception w){
+			throw new CustomExceptions.UnauthorizedAccountException("User is not authorized");
 		}
 
-		if(Objects.equals(user.getRole(), "OWNER")) {
-			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		if(user.getRole() == Role.ADMIN && requestRole != Role.USER){
+			throw new CustomExceptions.UnauthorizedAccountException("ADMIN can create only USER roles");
+		}
+
+		if(user.getRole() == Role.OWNER) {
+			throw new CustomExceptions.OwnerAlreadyExistsException("There can only be one OWNER role in the system.");
 		}
 
 		CustomUser createdUser = repo.save(user);
@@ -41,7 +48,7 @@ public class UserController {
 	}
 
 	@PutMapping("/update/{email}")
-	public ResponseEntity<CustomUser> updateUser(@RequestBody CustomUser updateUser, @PathVariable String email, HttpServletRequest request) {
+	public ResponseEntity<CustomUser> updateUser(@RequestBody CustomUser updateUser, @PathVariable String email, HttpServletRequest request) throws Exception {
 
 		if(!Objects.equals(updateUser.getEmail(), email)) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -54,11 +61,11 @@ public class UserController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
 		if(requestRole == Role.ADMIN && updateUser.getRole() != Role.USER){
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			throw new CustomExceptions.UnauthorizedAccountException("ADMIN can update only USER roles.");
 		}
 
-		if(requestRole != Role.OWNER) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		if(requestRole == Role.USER) {
+			throw new CustomExceptions.UnauthorizedAccountException("Only OWNER can update all other users.");
 		}
 
 		CustomUser updatedUser = repo.save(updateUser);
@@ -66,14 +73,20 @@ public class UserController {
 	}
 
 	@DeleteMapping("/delete/{email}")
-	public ResponseEntity<Void> deleteUserByEmail(@PathVariable String email, HttpServletRequest request){
-			Optional<CustomUser> deleteUser = repo.findByEmail(email);
+	public ResponseEntity<Void> deleteUserByEmail(@PathVariable String email, HttpServletRequest request) throws Exception{
+		Role requestRole = Role.valueOf(request.getHeader("X-User-Role").substring(5));
+		Optional<CustomUser> deleteUser = repo.findByEmail(email);
 
-			if(deleteUser.isEmpty())
-			{
-				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-			}
-			repo.deleteByEmail(email);
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		if(requestRole != Role.OWNER){
+			throw new CustomExceptions.UnauthorizedAccountException("Only OWNER can delete other users.");
+		}
+
+		if(deleteUser.isEmpty())
+		{
+			throw new CustomExceptions.NoContentFoundException("This user does not exist.");
+		}
+
+		repo.deleteByEmail(email);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
  }
