@@ -1,6 +1,6 @@
 -- EUR to other currencies
-insert into currency_exchange(id,currency_from,currency_to,conversion_multiple)
-values(10001,'EUR','RSD',117);
+insert into currency_exchange(id, currency_from, currency_to, conversion_multiple)
+values (10001, 'EUR', 'RSD', 117);
 INSERT INTO currency_exchange(id, currency_from, currency_to, conversion_multiple)
 VALUES (10002, 'EUR', 'USD', 1.13);
 INSERT INTO currency_exchange(id, currency_from, currency_to, conversion_multiple)

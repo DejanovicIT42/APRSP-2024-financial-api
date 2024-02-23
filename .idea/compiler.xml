@@ -18,6 +18,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="api-gateway" options="-parameters" />
+      <module name="bank-account" options="-parameters" />
       <module name="currency-conversion" options="-parameters" />
       <module name="currency-exchange" options="-parameters" />
       <module name="naming-server" options="-parameters" />
