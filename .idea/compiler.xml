@@ -10,6 +10,7 @@
         <module name="currency-conversion" />
         <module name="currency-exchange" />
         <module name="users-service" />
+        <module name="bank-account" />
         <module name="naming-server" />
       </profile>
     </annotationProcessing>

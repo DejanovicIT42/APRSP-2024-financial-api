@@ -56,12 +56,11 @@ public class ApiGatewayAuthentication {
 	public SecurityWebFilterChain filterChain(ServerHttpSecurity http) throws Exception{
 		http.csrf().disable()
 		.authorizeExchange()
-				.pathMatchers("/currency-exchange/**").permitAll()
+				.pathMatchers("/currency-exchange/from/{from}/to/{to}").permitAll()
 				.pathMatchers(HttpMethod.GET, "/users-service/**").hasAnyRole("ADMIN", "OWNER")
 				.pathMatchers(HttpMethod.POST, "/users-service/**").hasAnyRole("ADMIN","OWNER")
 				.pathMatchers(HttpMethod.PUT, "/users-service/**").hasAnyRole("ADMIN","OWNER")
 				.pathMatchers(HttpMethod.DELETE, "/users-service/**").hasRole("OWNER")
-				.pathMatchers("/users-service/**").permitAll()
 				.pathMatchers("/currency-conversion").hasAnyRole("ADMIN","USER")
 				.and()
 		.httpBasic().and()

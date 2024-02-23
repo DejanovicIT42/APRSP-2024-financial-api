@@ -18,6 +18,8 @@ public class CurrencyExchange {
 	
 	@Column(name = "currency_to")
 	private String to;
+
+	@Column(name = "conversion_multiple", precision = 38, scale = 4)
 	private BigDecimal conversionMultiple;
 	
 	@Transient
