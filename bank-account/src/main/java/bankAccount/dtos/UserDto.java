@@ -1,26 +1,17 @@
-package usersService.model;
+package bankAccount.dtos;
 
-import jakarta.persistence.*;
-import usersService.Role;
+import bankAccount.Role;
 
-@Entity(name = "CUSTOM_USER")
-public class CustomUser {
-
-    @Id
+public class UserDto {
     private long id;
 
-    @Column(unique = true, nullable = false)
     private String email;
-    @Column(nullable = false)
+
     private String password;
 
-    @Enumerated(EnumType.STRING)
     private Role role;
 
-    //KONSTRUKTOR I GET I SET METODE
-    public CustomUser() {
-
-    }
+    private String environment;
 
     public long getId() {
         return id;
@@ -54,4 +45,19 @@ public class CustomUser {
         this.role = role;
     }
 
+    public String getEnvironment() {
+        return environment;
+    }
+
+    public void setEnvironment(String environment) {
+        this.environment = environment;
+    }
+
+    public UserDto(long id, String email, String password, Role role, String environment) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.environment = environment;
+    }
 }

@@ -37,8 +37,8 @@ services:
     depends_on:
       - naming-server
     environment:
-      EUREKA.CLIENT.SERVICE-URL.DEFAULTZONE: http://naming-server:8761/eureka     
-      
+      EUREKA.CLIENT.SERVICE-URL.DEFAULTZONE: http://naming-server:8761/eureka
+
   naming-server:
     image: elenadejanovic/naming-server:0.0.1
     build:
@@ -59,6 +59,6 @@ services:
       - naming-server
     environment:
       EUREKA.CLIENT.SERVICE-URL.DEFAULTZONE: http://naming-server:8761/eureka
- 
+
 networks:
   currency-network:

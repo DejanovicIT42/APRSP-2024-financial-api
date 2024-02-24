@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 
-@Entity
+@Entity(name = "BANK_ACCOUNT")
 public class BankAccount {
 
     @Id
@@ -120,4 +120,5 @@ public class BankAccount {
     public String getEnvironment() {
         return environment;
     }
+
 }

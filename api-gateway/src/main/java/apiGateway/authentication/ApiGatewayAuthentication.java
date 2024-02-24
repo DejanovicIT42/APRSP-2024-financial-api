@@ -62,6 +62,9 @@ public class ApiGatewayAuthentication {
                 .pathMatchers(HttpMethod.DELETE, "/users-service/**").hasRole("OWNER")
                 .pathMatchers("/currency-conversion").hasAnyRole("ADMIN", "USER")
                 .pathMatchers(HttpMethod.GET, "/bank-account/get/{email}").hasAnyRole("ADMIN", "OWNER")
+                .pathMatchers(HttpMethod.POST, "/bank-account").hasRole("ADMIN")
+                .pathMatchers(HttpMethod.PUT, "/bank-account/{email}").hasRole("ADMIN")
+                .pathMatchers(HttpMethod.DELETE, "/bank-account/{email}").permitAll()
                 .and()
                 .httpBasic().and()
                 //This adds a filter to the filter chain. The filter is defined as a lambda function that takes two parameters: exchange and chain.
