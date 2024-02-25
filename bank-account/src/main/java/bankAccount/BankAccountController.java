@@ -5,6 +5,7 @@ import bankAccount.dtos.UserProxy;
 import bankAccount.exceptions.CustomExceptions;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,12 +38,11 @@ public class BankAccountController {
     }
 
     @PostMapping()
-    public ResponseEntity<BankAccount> createBankAccount(@RequestBody BankAccount account, HttpServletRequest request) throws Exception {
+    public ResponseEntity<BankAccount> createBankAccount(@RequestBody BankAccount account) throws Exception {
         if (repo.findByEmail(account.getEmail()) != null) {
             throw new CustomExceptions.OnlyOneBankAccountPerUserException("There can be only one bank account per user.");
         }
 
-        Role requestRole = Role.valueOf(request.getHeader("X-User-Role").substring(5));
 
         ResponseEntity<UserDto> proxyResponse = userProxy.getUserByEmail(account.getEmail());
         if (proxyResponse.getStatusCode() != HttpStatus.OK) {
@@ -68,9 +68,13 @@ public class BankAccountController {
 
         account.setEmail(email);
 
-        Role requestRole = Role.valueOf(request.getHeader("X-User-Role").substring(5));
-        if (requestRole != Role.USER) {
-            throw new CustomExceptions.UnauthorizedAccountException("ADMIN can create bank account only for USER role.");
+        ResponseEntity<UserDto> proxyResponse = userProxy.getUserByEmail(account.getEmail());
+        if (proxyResponse.getStatusCode() != HttpStatus.OK) {
+            throw new CustomExceptions.AccountNotFoundException("Cannot find user.");
+        }
+        UserDto user = proxyResponse.getBody();
+        if (user == null || user.getRole() != Role.USER) {
+            throw new CustomExceptions.UnauthorizedAccountException("ADMIN can update bank account only for USER role.");
         }
 
         BankAccount updatedAccount = repo.save(account);
@@ -86,6 +90,7 @@ public class BankAccountController {
         if (deleteAccount == null) {
             throw new CustomExceptions.AccountNotFoundException("This bank account does not exist.");
         }
+
 
         repo.deleteBankAccountByEmail(email);
         return new ResponseEntity<>(HttpStatus.OK);

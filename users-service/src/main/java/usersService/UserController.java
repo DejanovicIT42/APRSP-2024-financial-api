@@ -2,9 +2,11 @@ package usersService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import usersService.dtos.BankAccountProxy;
 import usersService.miloradEror.CustomExceptions;
 import usersService.model.CustomUser;
 
@@ -18,6 +20,9 @@ public class UserController {
 
     @Autowired
     private CustomUserRepository repo;
+
+    @Autowired
+    private BankAccountProxy bankAccountProxy;
 
     @GetMapping("/{email}")
     private ResponseEntity<CustomUser> getByEmail(@PathVariable String email) throws Exception {
@@ -89,10 +94,14 @@ public class UserController {
         }
 
         if (deleteUser.isEmpty()) {
-            throw new CustomExceptions.NoContentFoundException("This user does not exist.");
+            throw new CustomExceptions.UserDoesntExistException("This user does not exist.");
         }
 
-        repo.deleteByEmail(email);
+        if(deleteUser.get().getRole() == Role.USER){
+            bankAccountProxy.deleteBankAccount(email);
+        }
+
+            repo.deleteByEmail(email);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

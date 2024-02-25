@@ -25,4 +25,10 @@ public class CustomExceptions {
             super(message);
         }
     }
+
+    public static class UserDoesntExistException extends Exception {
+        public UserDoesntExistException(String message) {
+            super(message);
+        }
+    }
 }

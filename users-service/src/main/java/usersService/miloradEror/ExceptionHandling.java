@@ -31,4 +31,10 @@ public class ExceptionHandling {
         ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(errorResponse);
     }
+
+    @ExceptionHandler(CustomExceptions.UserDoesntExistException.class)
+    public ResponseEntity<ErrorResponse> handleUserDoesntExistException(CustomExceptions.UserDoesntExistException e) {
+        ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+    }
 }
