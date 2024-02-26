@@ -64,6 +64,7 @@ public class ApiGatewayAuthentication {
                 .pathMatchers(HttpMethod.GET, "/bank-account/get/{email}").hasAnyRole("ADMIN", "OWNER")
                 .pathMatchers(HttpMethod.POST, "/bank-account").hasRole("ADMIN")
                 .pathMatchers(HttpMethod.PUT, "/bank-account/{email}").hasRole("ADMIN")
+                .pathMatchers(HttpMethod.PUT, "/bank-account/{email}/decrease/**").hasRole("ADMIN")
                 .pathMatchers(HttpMethod.DELETE, "/bank-account/{email}").permitAll()
                 .and()
                 .httpBasic().and()

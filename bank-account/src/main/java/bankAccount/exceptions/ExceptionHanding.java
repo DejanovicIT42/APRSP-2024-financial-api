@@ -31,4 +31,10 @@ public class ExceptionHanding {
         ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorResponse);
     }
+
+    @ExceptionHandler(CustomExceptions.YouCantDoThatException.class)
+    public ResponseEntity<ErrorResponse> handleYouCantDoThatException(CustomExceptions.YouCantDoThatException e) {
+        ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
 }

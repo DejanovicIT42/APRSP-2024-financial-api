@@ -25,4 +25,10 @@ public class CustomExceptions {
             super(message);
         }
     }
+
+    public static class YouCantDoThatException extends Exception {
+        public YouCantDoThatException(String message) {
+            super(message);
+        }
+    }
 }
