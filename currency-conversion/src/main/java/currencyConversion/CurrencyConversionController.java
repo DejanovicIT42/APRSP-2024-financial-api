@@ -22,13 +22,13 @@ import java.util.HashMap;
 public class CurrencyConversionController {
 
     @Autowired
-    private CurrencyExchangeProxy proxy;
+    private CurrencyExchangeProxy exchangeProxy;
 
     @Autowired
     private BankAccountProxy bankAccountProxy;
 
     //localhost:8100/currency-conversion/from/EUR/to/RSD/quantity/100
-    @GetMapping("/from/{from}/to/{to}/quantity/{quantity}")
+    @PostMapping("/from/{from}/to/{to}/quantity/{quantity}")
     public ResponseEntity<BankAccountDto> getConversion
     (@PathVariable String from, @PathVariable String to, @PathVariable BigDecimal quantity, HttpServletRequest request) throws Exception{
 
@@ -36,14 +36,10 @@ public class CurrencyConversionController {
         if(requestEmail == null)
             throw new CustomExceptions.NoContentFoundException("Requested email doesn't exist");
 
-        HashMap<String, String> uriVariables = new HashMap<String, String>();
-        uriVariables.put("from", from);
-        uriVariables.put("to", to);
-
-        ResponseEntity<CurrencyConversion> response =
-                new RestTemplate().
-                        getForEntity("http://localhost:8000/currency-exchange/from/{from}/to/{to}",
-                                CurrencyConversion.class, uriVariables);
+        ResponseEntity<CurrencyConversion> response = exchangeProxy.getExchange(
+                from,
+                to
+        );
 
         CurrencyConversion cc = response.getBody();
         if(cc == null)
@@ -51,9 +47,12 @@ public class CurrencyConversionController {
 
         BigDecimal toQuantity = cc.getConversionMultiple().multiply(quantity);
 
+
         ResponseEntity<BankAccountDto> updatedAccount = bankAccountProxy.updateAccountBalance(
-                requestEmail, quantity, from, toQuantity, to
+                requestEmail, quantity, from, toQuantity, to, "ADMIN"
         );
+
+        updatedAccount.getBody().setMessage("Conversion successful from "+quantity+" "+from+" to "+toQuantity+" "+to);
 
         return new ResponseEntity<>(updatedAccount.getBody(), HttpStatus.OK);
     }
@@ -64,7 +63,7 @@ public class CurrencyConversionController {
     public ResponseEntity<?> getConversionFeign(@RequestParam String from, @RequestParam String to, @RequestParam double quantity) {
 
         try {
-            ResponseEntity<CurrencyConversion> response = proxy.getExchange(from, to);
+            ResponseEntity<CurrencyConversion> response = exchangeProxy.getExchange(from, to);
             CurrencyConversion responseBody = response.getBody();
             return ResponseEntity.ok(new CurrencyConversion(from, to, responseBody.getConversionMultiple(), responseBody.getEnvironment() + " feign",
                     quantity, responseBody.getConversionMultiple().multiply(BigDecimal.valueOf(quantity))));
@@ -72,6 +71,7 @@ public class CurrencyConversionController {
             return ResponseEntity.status(e.status()).body(e.getMessage());
         }
     }
+
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<String> handleMissingParams(MissingServletRequestParameterException ex) {
