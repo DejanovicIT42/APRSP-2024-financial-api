@@ -85,6 +85,7 @@ public class BankAccountController {
         return new ResponseEntity<>(updatedAccount, HttpStatus.OK);
     }
 
+    //amount umesto quantity?
     @PutMapping("/{email}/decrease/{quantityFrom}/from/{currencyFrom}/increase/{quantityTo}/from/{currencyTo}")
     public ResponseEntity<BankAccount> updateAccountBalance(
             @PathVariable String email,

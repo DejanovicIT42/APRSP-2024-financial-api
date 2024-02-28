@@ -10,6 +10,7 @@
         <option value="$PROJECT_DIR$/namingServer/pom.xml" />
         <option value="$PROJECT_DIR$/users-service/pom.xml" />
         <option value="$PROJECT_DIR$/bank-account/pom.xml" />
+        <option value="$PROJECT_DIR$/crypto-exchange/pom.xml" />
       </list>
     </option>
   </component>

@@ -4,6 +4,8 @@
     <file url="file://$PROJECT_DIR$/api-gateway/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/bank-account/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/bank-account/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/crypto-exchange/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/crypto-exchange/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/currency-conversion/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/currency-exchange/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/namingServer/src/main/java" charset="UTF-8" />

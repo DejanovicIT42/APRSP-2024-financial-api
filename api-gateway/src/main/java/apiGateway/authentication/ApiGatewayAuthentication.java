@@ -40,7 +40,7 @@ public class ApiGatewayAuthentication {
         List<UserDetails> users = new ArrayList<>();
 
         try {
-            WebClient webClient = WebClient.create("lb://users-service/users-service");
+            WebClient webClient = WebClient.create("http://localhost:8770/users-service");
 
             CustomUserDto[] usersFromDatabase = webClient.get()
                     .uri("/users")
@@ -78,6 +78,7 @@ public class ApiGatewayAuthentication {
                 .pathMatchers(HttpMethod.PUT, "/bank-account/{email}").hasRole("ADMIN")
                 .pathMatchers(HttpMethod.PUT, "/bank-account/{email}/decrease/**").hasRole("ADMIN")
                 .pathMatchers(HttpMethod.DELETE, "/bank-account/{email}").permitAll()
+                .pathMatchers("/crypto-exchange/**").permitAll()
                 .and()
                 .httpBasic().and()
                 //This adds a filter to the filter chain. The filter is defined as a lambda function that takes two parameters: exchange and chain.

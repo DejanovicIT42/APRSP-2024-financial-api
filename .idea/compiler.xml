@@ -6,11 +6,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="api-gateway" />
+        <module name="crypto-exchange" />
         <module name="currency-conversion" />
-        <module name="currency-exchange" />
         <module name="users-service" />
         <module name="bank-account" />
+        <module name="api-gateway" />
+        <module name="currency-exchange" />
         <module name="naming-server" />
       </profile>
     </annotationProcessing>
@@ -19,6 +20,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="api-gateway" options="-parameters" />
       <module name="bank-account" options="-parameters" />
+      <module name="crypto-exchange" options="-parameters" />
       <module name="currency-conversion" options="-parameters" />
       <module name="currency-exchange" options="-parameters" />
       <module name="naming-server" options="-parameters" />
