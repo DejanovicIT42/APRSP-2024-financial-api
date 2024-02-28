@@ -89,65 +89,65 @@ public class BankAccountController {
     public ResponseEntity<BankAccount> updateAccountBalance(
             @PathVariable String email,
             @PathVariable BigDecimal quantityFrom, @PathVariable String currencyFrom,
-            @PathVariable BigDecimal quantityTo, @PathVariable String currencyTo) throws Exception{
+            @PathVariable BigDecimal quantityTo, @PathVariable String currencyTo) throws Exception {
         BankAccount account = repo.findByEmail(email);
         if (account == null)
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
-        if(Objects.equals(currencyFrom, currencyTo))
-            throw new CustomExceptions.YouCantDoThatException("Cannot convert from "+currencyFrom+" to "+ currencyTo);
+        if (Objects.equals(currencyFrom, currencyTo))
+            throw new CustomExceptions.YouCantDoThatException("Cannot convert from " + currencyFrom + " to " + currencyTo);
 
-        switch (currencyFrom){
+        switch (currencyFrom) {
             case "EUR":
-                if(account.getEUR_amount().compareTo(quantityFrom) < 0)
+                if (account.getEUR_amount().compareTo(quantityFrom) < 0)
                     throw new CustomExceptions.YouCantDoThatException("You broke.");
                 account.setEUR_amount(account.getEUR_amount().subtract(quantityFrom));
                 break;
             case "USD":
-                if(account.getUSD_amount().compareTo(quantityFrom) < 0)
+                if (account.getUSD_amount().compareTo(quantityFrom) < 0)
                     throw new CustomExceptions.YouCantDoThatException("You broke.");
                 account.setUSD_amount(account.getUSD_amount().subtract(quantityFrom));
                 break;
             case "GBP":
-                if(account.getGBP_amount().compareTo(quantityFrom) < 0)
+                if (account.getGBP_amount().compareTo(quantityFrom) < 0)
                     throw new CustomExceptions.YouCantDoThatException("You broke.");
                 account.setGBP_amount(account.getGBP_amount().subtract(quantityFrom));
                 break;
             case "CHF":
-                if(account.getCHF_amount().compareTo(quantityFrom) < 0)
+                if (account.getCHF_amount().compareTo(quantityFrom) < 0)
                     throw new CustomExceptions.YouCantDoThatException("You broke.");
                 account.setCHF_amount(account.getCHF_amount().subtract(quantityFrom));
                 break;
             case "RSD":
-                if(account.getRSD_amount().compareTo(quantityFrom) < 0)
+                if (account.getRSD_amount().compareTo(quantityFrom) < 0)
                     throw new CustomExceptions.YouCantDoThatException("You broke.");
                 account.setRSD_amount(account.getRSD_amount().subtract(quantityFrom));
                 break;
         }
 
-        switch (currencyTo){
+        switch (currencyTo) {
             case "EUR":
-                if(account.getEUR_amount().compareTo(quantityTo) < 0)
+                if (account.getEUR_amount().compareTo(quantityTo) < 0)
                     throw new CustomExceptions.YouCantDoThatException("You broke.");
                 account.setEUR_amount(account.getEUR_amount().add(quantityTo));
                 break;
             case "USD":
-                if(account.getUSD_amount().compareTo(quantityTo) < 0)
+                if (account.getUSD_amount().compareTo(quantityTo) < 0)
                     throw new CustomExceptions.YouCantDoThatException("You broke.");
                 account.setUSD_amount(account.getUSD_amount().add(quantityTo));
                 break;
             case "GBP":
-                if(account.getGBP_amount().compareTo(quantityTo) < 0)
+                if (account.getGBP_amount().compareTo(quantityTo) < 0)
                     throw new CustomExceptions.YouCantDoThatException("You broke.");
                 account.setGBP_amount(account.getGBP_amount().add(quantityTo));
                 break;
             case "CHF":
-                if(account.getCHF_amount().compareTo(quantityTo) < 0)
+                if (account.getCHF_amount().compareTo(quantityTo) < 0)
                     throw new CustomExceptions.YouCantDoThatException("You broke.");
                 account.setCHF_amount(account.getCHF_amount().add(quantityTo));
                 break;
             case "RSD":
-                if(account.getRSD_amount().compareTo(quantityTo) < 0)
+                if (account.getRSD_amount().compareTo(quantityTo) < 0)
                     throw new CustomExceptions.YouCantDoThatException("You broke.");
                 account.setRSD_amount(account.getRSD_amount().add(quantityTo));
                 break;

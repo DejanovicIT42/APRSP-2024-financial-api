@@ -7,15 +7,12 @@ import currencyConversion.proxy.CurrencyExchangeProxy;
 import feign.FeignException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 
 @RestController
 @RequestMapping("/currency-conversion")
@@ -30,10 +27,10 @@ public class CurrencyConversionController {
     //localhost:8100/currency-conversion/from/EUR/to/RSD/quantity/100
     @PostMapping("/from/{from}/to/{to}/quantity/{quantity}")
     public ResponseEntity<BankAccountDto> getConversion
-    (@PathVariable String from, @PathVariable String to, @PathVariable BigDecimal quantity, HttpServletRequest request) throws Exception{
+    (@PathVariable String from, @PathVariable String to, @PathVariable BigDecimal quantity, HttpServletRequest request) throws Exception {
 
         String requestEmail = request.getHeader("X-User-Email");
-        if(requestEmail == null)
+        if (requestEmail == null)
             throw new CustomExceptions.NoContentFoundException("Requested email doesn't exist");
 
         ResponseEntity<CurrencyConversion> response = exchangeProxy.getExchange(
@@ -42,7 +39,7 @@ public class CurrencyConversionController {
         );
 
         CurrencyConversion cc = response.getBody();
-        if(cc == null)
+        if (cc == null)
             throw new CustomExceptions.NoContentFoundException("Cannot convert null.");
 
         BigDecimal toQuantity = cc.getConversionMultiple().multiply(quantity);
@@ -52,7 +49,7 @@ public class CurrencyConversionController {
                 requestEmail, quantity, from, toQuantity, to, "ADMIN"
         );
 
-        updatedAccount.getBody().setMessage("Conversion successful from "+quantity+" "+from+" to "+toQuantity+" "+to);
+        updatedAccount.getBody().setMessage("Conversion successful from " + quantity + " " + from + " to " + toQuantity + " " + to);
 
         return new ResponseEntity<>(updatedAccount.getBody(), HttpStatus.OK);
     }

@@ -2,7 +2,6 @@ package usersService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -97,11 +96,11 @@ public class UserController {
             throw new CustomExceptions.UserDoesntExistException("This user does not exist.");
         }
 
-        if(deleteUser.get().getRole() == Role.USER){
+        if (deleteUser.get().getRole() == Role.USER) {
             bankAccountProxy.deleteBankAccount(email);
         }
 
-            repo.deleteByEmail(email);
+        repo.deleteByEmail(email);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

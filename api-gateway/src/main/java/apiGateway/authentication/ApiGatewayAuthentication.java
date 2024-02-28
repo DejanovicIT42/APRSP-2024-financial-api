@@ -4,6 +4,7 @@ import authentication.dtos.CustomUserDto;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
@@ -15,7 +16,9 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ServerWebExchange;
 
 import java.util.ArrayList;
@@ -28,27 +31,36 @@ import java.util.Objects;
 public class ApiGatewayAuthentication {
 
     @Bean
-    public MapReactiveUserDetailsService userDetailsService(BCryptPasswordEncoder encoder) {
-        List<UserDetails> users = new ArrayList<>();
-        List<CustomUserDto> usersFromDatabase;
-
-        ResponseEntity<CustomUserDto[]> response =
-                new RestTemplate().getForEntity("http://localhost:8770/users-service/users", CustomUserDto[].class);
-        usersFromDatabase = Arrays.asList(Objects.requireNonNull(response.getBody()));
-
-        for (CustomUserDto cud : usersFromDatabase) {
-            users.add(User.withUsername(cud.getEmail())
-                    .password(encoder.encode(cud.getPassword()))
-                    .roles(cud.getRole().name())
-                    .build());
-        }
-
-        return new MapReactiveUserDetailsService(users);
+    public BCryptPasswordEncoder getEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public BCryptPasswordEncoder getEncoder() {
-        return new BCryptPasswordEncoder();
+    public MapReactiveUserDetailsService userDetailsService(BCryptPasswordEncoder encoder) {
+        List<UserDetails> users = new ArrayList<>();
+
+        try {
+            WebClient webClient = WebClient.create("lb://users-service/users-service");
+
+            CustomUserDto[] usersFromDatabase = webClient.get()
+                    .uri("/users")
+                    .accept(MediaType.APPLICATION_JSON)
+                    .retrieve()
+                    .bodyToMono(CustomUserDto[].class)
+                    .block();
+
+            for (CustomUserDto cud : usersFromDatabase) {
+                users.add(User.withUsername(cud.getEmail())
+                        .password(encoder.encode(cud.getPassword()))
+                        .roles(cud.getRole().name())
+                        .build());
+            }
+
+        } catch (RestClientException e) {
+            e.printStackTrace();
+        }
+
+        return new MapReactiveUserDetailsService(users);
     }
 
     @Bean

@@ -9,5 +9,5 @@ FROM openjdk:17-slim
 
 WORKDIR /app
 COPY --from=build app/target/*.jar naming-server.jar
-EXPOSE 8000
+EXPOSE 8761
 ENTRYPOINT ["java","-jar","naming-server.jar"]

@@ -8,6 +8,6 @@ RUN mvn package
 FROM openjdk:17-slim
 
 WORKDIR /app
-COPY --from=build app/target/*.jar api-gateway.jar
-EXPOSE 8765
-ENTRYPOINT ["java","-jar","api-gateway.jar"]
+COPY --from=build app/target/*.jar currency-conversion.jar
+EXPOSE 8100
+ENTRYPOINT ["java","-jar","currency-conversion.jar"]

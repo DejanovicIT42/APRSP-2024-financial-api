@@ -2,6 +2,73 @@ version: '3.7'
 
 name: agilne-2024-elena-dejanovic
 services:
+
+  bank-account:
+    image: elenadejanovic/bank-account:latest
+    build:
+      context: ./bank-account
+      dockerfile: Dockerfile
+    ports:
+      - "8200:8200"
+    networks:
+      - currency-network
+    depends_on:
+      - naming-server
+    environment:
+      EUREKA.CLIENT.SERVICE-URL.DEFAULTZONE: http://naming-server:8761/eureka
+
+  currency-conversion:
+    image: elenadejanovic/currency-conversion:latest
+    build:
+      context: ./currency-conversion
+      dockerfile: Dockerfile
+    ports:
+      - "8100:8100"
+    networks:
+      - currency-network
+    depends_on:
+      - naming-server
+    environment:
+      EUREKA.CLIENT.SERVICE-URL.DEFAULTZONE: http://naming-server:8761/eureka
+
+  currency-exchange:
+    image: elenadejanovic/currency-exchange:latest
+    build:
+      context: ./currency-exchange
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    networks:
+      - currency-network
+    depends_on:
+      - naming-server
+    environment:
+      EUREKA.CLIENT.SERVICE-URL.DEFAULTZONE: http://naming-server:8761/eureka
+
+  naming-server:
+    image: elenadejanovic/naming-server:latest
+    build:
+      context: ./namingServer
+      dockerfile: Dockerfile
+    ports:
+      - "8761:8761"
+    networks:
+      - currency-network
+
+  users-service:
+    image: elenadejanovic/user-service:latest
+    build:
+      context: ./users-service
+      dockerfile: Dockerfile
+    ports:
+      - "8770:8770"
+    networks:
+      - currency-network
+    depends_on:
+      - naming-server
+    environment:
+      EUREKA.CLIENT.SERVICE-URL.DEFAULTZONE: http://naming-server:8761/eureka
+
   api-gateway:
     image: elenadejanovic/api-gateway:latest
     build:
@@ -13,52 +80,11 @@ services:
       - currency-network
     depends_on:
       - naming-server
-      - user-service
+      - users-service
+      - bank-account
+      - currency-exchange
+      - currency-conversion
     environment:
       EUREKA.CLIENT.SERVICE-URL.DEFAULTZONE: http://naming-server:8761/eureka
-
-  currency-conversion:
-    image: elenadejanovic/currency-conversion:1.0.0
-    ports:
-      - "8100:8100"
-    networks:
-      - currency-network
-    depends_on:
-      - naming-server
-    environment:
-      EUREKA.CLIENT.SERVICE-URL.DEFAULTZONE: http://naming-server:8761/eureka
-
-  currency-exchange:
-    image: elenadejanovic/currency-exchange:1.0.0
-    ports:
-      - "8000:8000"
-    networks:
-      - currency-network
-    depends_on:
-      - naming-server
-    environment:
-      EUREKA.CLIENT.SERVICE-URL.DEFAULTZONE: http://naming-server:8761/eureka
-
-  naming-server:
-    image: elenadejanovic/naming-server:0.0.1
-    build:
-      context: ./namingServer
-      dockerfile: Dockerfile
-    ports:
-      - "8761:8761"
-    networks:
-      - currency-network
-
-  user-service:
-    image: elenadejanovic/user-service:1.0.0
-    ports:
-      - "8770:8770"
-    networks:
-      - currency-network
-    depends_on:
-      - naming-server
-    environment:
-      EUREKA.CLIENT.SERVICE-URL.DEFAULTZONE: http://naming-server:8761/eureka
-
 networks:
   currency-network:

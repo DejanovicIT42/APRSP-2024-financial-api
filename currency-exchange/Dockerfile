@@ -1,4 +1,13 @@
-FROM openjdk:17
+FROM maven:3.8.5-openjdk-17-slim as build
+LABEL authors = "elenadejanovic"
+WORKDIR /app
+COPY . .
+
+RUN mvn package
+
+FROM openjdk:17-slim
+
+WORKDIR /app
+COPY --from=build app/target/*.jar currency-exchange.jar
 EXPOSE 8000
-ADD target/currency-exchange.jar currency-exchange.jar
-ENTRYPOINT ["java","-jar","/currency-exchange.jar"]
+ENTRYPOINT ["java","-jar","currency-exchange.jar"]
