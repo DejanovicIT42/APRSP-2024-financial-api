@@ -1,7 +1,7 @@
 package bankAccount;
 
-import bankAccount.dtos.UserDto;
-import bankAccount.dtos.UserProxy;
+import bankAccount.proxy.UserDto;
+import bankAccount.proxy.UserProxy;
 import bankAccount.exceptions.CustomExceptions;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +45,6 @@ public class BankAccountController {
             throw new CustomExceptions.OnlyOneBankAccountPerUserException("There can be only one bank account per user.");
         }
 
-
         ResponseEntity<UserDto> proxyResponse = userProxy.getUserByEmail(account.getEmail());
         if (proxyResponse.getStatusCode() != HttpStatus.OK) {
             throw new CustomExceptions.AccountNotFoundException("Cannot find user.");
@@ -56,10 +55,10 @@ public class BankAccountController {
             throw new CustomExceptions.UnauthorizedAccountException("ADMIN can create bank account only for USER role.");
         }
 
-        BankAccount createdAccount = repo.save(account);
-        createdAccount.setEnvironment(environment.getProperty("local.server.port"));
+        BankAccount createdWallet = repo.save(account);
+        createdWallet.setEnvironment(environment.getProperty("local.server.port"));
 
-        return new ResponseEntity<>(createdAccount, HttpStatus.OK);
+        return new ResponseEntity<>(createdWallet, HttpStatus.OK);
     }
 
     @PutMapping("/{email}")

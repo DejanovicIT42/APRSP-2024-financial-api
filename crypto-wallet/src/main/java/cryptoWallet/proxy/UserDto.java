@@ -1,6 +1,4 @@
-package bankAccount.dtos;
-
-import bankAccount.Role;
+package cryptoWallet.proxy;
 
 public class UserDto {
     private long id;

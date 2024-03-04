@@ -9,3 +9,6 @@ values (3, 'abc@gmail.com', 'password2', 'USER');
 
 insert into custom_user(id, email, password, role)
 values (4, 'abcd@gmail.com', 'password3', 'USER');
+
+insert into custom_user(id, email, password, role)
+values (5, 'cryptobro@gmail.com', 'password4', 'USER');

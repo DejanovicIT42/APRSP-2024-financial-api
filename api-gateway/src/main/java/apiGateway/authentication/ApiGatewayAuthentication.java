@@ -79,6 +79,10 @@ public class ApiGatewayAuthentication {
                 .pathMatchers(HttpMethod.PUT, "/bank-account/{email}/decrease/**").hasRole("ADMIN")
                 .pathMatchers(HttpMethod.DELETE, "/bank-account/{email}").permitAll()
                 .pathMatchers("/crypto-exchange/**").permitAll()
+                .pathMatchers(HttpMethod.GET, "/crypto-wallet/**").permitAll()
+                .pathMatchers(HttpMethod.POST, "/crypto-wallet/**").hasRole("ADMIN")
+                .pathMatchers(HttpMethod.PUT, "/crypto-wallet/**").hasRole("ADMIN")
+                .pathMatchers(HttpMethod.DELETE, "/crypto-wallet/{email}").permitAll()
                 .and()
                 .httpBasic().and()
                 //This adds a filter to the filter chain. The filter is defined as a lambda function that takes two parameters: exchange and chain.

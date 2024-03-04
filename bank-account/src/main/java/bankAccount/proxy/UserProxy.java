@@ -1,4 +1,4 @@
-package bankAccount.dtos;
+package bankAccount.proxy;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;

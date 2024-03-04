@@ -5,9 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import usersService.dtos.BankAccountProxy;
+import usersService.proxy.BankAccountProxy;
 import usersService.miloradEror.CustomExceptions;
 import usersService.model.CustomUser;
+import usersService.proxy.CryptoWalletProxy;
 
 import java.util.List;
 import java.util.Objects;
@@ -22,6 +23,9 @@ public class UserController {
 
     @Autowired
     private BankAccountProxy bankAccountProxy;
+
+    @Autowired
+    private CryptoWalletProxy walletProxy;
 
     @GetMapping("/{email}")
     private ResponseEntity<CustomUser> getByEmail(@PathVariable String email) throws Exception {
@@ -98,6 +102,10 @@ public class UserController {
 
         if (deleteUser.get().getRole() == Role.USER) {
             bankAccountProxy.deleteBankAccount(email);
+        }
+
+        if(deleteUser.get().getRole() == Role.USER){
+            walletProxy.deleteCryptoWallet(email);
         }
 
         repo.deleteByEmail(email);

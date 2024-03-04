@@ -12,6 +12,7 @@
         <module name="bank-account" />
         <module name="api-gateway" />
         <module name="currency-exchange" />
+        <module name="crypto-wallet" />
         <module name="naming-server" />
       </profile>
     </annotationProcessing>
@@ -21,6 +22,7 @@
       <module name="api-gateway" options="-parameters" />
       <module name="bank-account" options="-parameters" />
       <module name="crypto-exchange" options="-parameters" />
+      <module name="crypto-wallet" options="-parameters" />
       <module name="currency-conversion" options="-parameters" />
       <module name="currency-exchange" options="-parameters" />
       <module name="naming-server" options="-parameters" />
