@@ -7,9 +7,10 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="crypto-exchange" />
-        <module name="currency-conversion" />
         <module name="users-service" />
+        <module name="currency-conversion" />
         <module name="bank-account" />
+        <module name="crypto-conversion" />
         <module name="api-gateway" />
         <module name="currency-exchange" />
         <module name="crypto-wallet" />
@@ -21,6 +22,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="api-gateway" options="-parameters" />
       <module name="bank-account" options="-parameters" />
+      <module name="crypto-conversion" options="-parameters" />
       <module name="crypto-exchange" options="-parameters" />
       <module name="crypto-wallet" options="-parameters" />
       <module name="currency-conversion" options="-parameters" />

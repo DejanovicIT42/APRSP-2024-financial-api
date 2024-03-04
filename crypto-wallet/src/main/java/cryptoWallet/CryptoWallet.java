@@ -11,7 +11,7 @@ public class CryptoWallet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(unique=true)
+    @Column(unique = true)
     private String email;
 
     @Column
