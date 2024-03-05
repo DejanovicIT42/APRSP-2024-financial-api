@@ -1,4 +1,4 @@
-package usersService.miloradEror;
+package usersService.exceptions;
 
 public class CustomExceptions {
 

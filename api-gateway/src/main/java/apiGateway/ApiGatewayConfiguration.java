@@ -20,6 +20,7 @@ public class ApiGatewayConfiguration {
                 .route(p -> p.path("/bank-account/**").uri("lb://bank-account"))
                 .route(p -> p.path("/crypto-exchange/**").uri("lb://crypto-exchange"))
                 .route(p -> p.path("/crypto-wallet/**").uri("lb://crypto-wallet"))
+                .route(p -> p.path("/crypto-conversion/**").uri("lb://crypto-conversion"))
                 .build();
     }
 

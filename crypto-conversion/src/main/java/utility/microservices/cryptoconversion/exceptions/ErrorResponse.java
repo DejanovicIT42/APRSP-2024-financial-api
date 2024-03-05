@@ -1,6 +1,7 @@
-package usersService.miloradEror;
+package utility.microservices.cryptoconversion.exceptions;
 
 public class ErrorResponse {
+
     private String message;
 
     public ErrorResponse(String message) {

@@ -120,18 +120,12 @@ public class CryptoWalletController {
 
         switch (cryptoTo) {
             case "BTC":
-                if (wallet.getBTC_amount().compareTo(quantityTo) < 0)
-                    throw new CustomExceptions.YouCantDoThatException("You don't have enough in your wallet.");
                 wallet.setBTC_amount(wallet.getBTC_amount().add(quantityTo));
                 break;
             case "ETH":
-                if (wallet.getETH_amount().compareTo(quantityTo) < 0)
-                    throw new CustomExceptions.YouCantDoThatException("You don't have enough in your wallet.");
                 wallet.setETH_amount(wallet.getETH_amount().add(quantityTo));
                 break;
             case "LUNA":
-                if (wallet.getLUNA_amount().compareTo(quantityTo) < 0)
-                    throw new CustomExceptions.YouCantDoThatException("You don't have enough in your wallet.");
                 wallet.setLUNA_amount(wallet.getLUNA_amount().add(quantityTo));
                 break;
         }
