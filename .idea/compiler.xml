@@ -15,6 +15,7 @@
         <module name="currency-exchange" />
         <module name="crypto-wallet" />
         <module name="naming-server" />
+        <module name="transfer-service" />
       </profile>
     </annotationProcessing>
   </component>
@@ -28,6 +29,7 @@
       <module name="currency-conversion" options="-parameters" />
       <module name="currency-exchange" options="-parameters" />
       <module name="naming-server" options="-parameters" />
+      <module name="transfer-service" options="-parameters" />
       <module name="users-service" options="-parameters" />
     </option>
   </component>

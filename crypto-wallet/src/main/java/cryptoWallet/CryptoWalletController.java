@@ -146,4 +146,7 @@ public class CryptoWalletController {
         repo.deleteCryptoWalletByEmail(email);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    //todo: changeCryptoWalletBalance
+//    public ResponseEntity<CryptoWallet> transferCryptoBalance()
 }

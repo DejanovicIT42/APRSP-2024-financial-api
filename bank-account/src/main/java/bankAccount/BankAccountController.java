@@ -170,4 +170,45 @@ public class BankAccountController {
         repo.deleteBankAccountByEmail(email);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @PutMapping("/transfer")
+    public ResponseEntity<BankAccount> transferBalance(@RequestBody TransferDto transferDto) throws Exception{
+
+        BankAccount fromAccount = repo.findByEmail(transferDto.getFromAccount());
+        BankAccount toAccount = repo.findByEmail(transferDto.getToAccount());
+
+        if(fromAccount == null || toAccount == null) {
+            throw new CustomExceptions.AccountNotFoundException("Bank account doesn't exist.");
+        }
+
+        switch (transferDto.getCurrency()) {
+            case "EUR":
+                fromAccount.setEUR_amount(fromAccount.getEUR_amount().subtract(transferDto.getFromQuantity()));
+                toAccount.setEUR_amount(toAccount.getEUR_amount().add(transferDto.getToQuantity()));
+                break;
+            case "USD":
+                fromAccount.setUSD_amount(fromAccount.getUSD_amount().subtract(transferDto.getFromQuantity()));
+                toAccount.setUSD_amount(toAccount.getUSD_amount().add(transferDto.getToQuantity()));
+                break;
+            case "GBP":
+                fromAccount.setGBP_amount(fromAccount.getGBP_amount().subtract(transferDto.getFromQuantity()));
+                toAccount.setGBP_amount(toAccount.getGBP_amount().add(transferDto.getToQuantity()));
+                break;
+            case "CHF":
+                fromAccount.setCHF_amount(fromAccount.getCHF_amount().subtract(transferDto.getFromQuantity()));
+                toAccount.setCHF_amount(toAccount.getCHF_amount().add(transferDto.getToQuantity()));
+                break;
+            case "RSD":
+                fromAccount.setRSD_amount(fromAccount.getRSD_amount().subtract(transferDto.getFromQuantity()));
+                toAccount.setRSD_amount(toAccount.getRSD_amount().add(transferDto.getToQuantity()));
+                break;
+            default:
+                throw new CustomExceptions.YouCantDoThatException("Currency " + transferDto.getCurrency() + " is not supported");
+        }
+
+        repo.save(fromAccount);
+        repo.save(toAccount);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }
