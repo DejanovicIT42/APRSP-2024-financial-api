@@ -15,19 +15,19 @@ public class BankAccount {
     @Column(unique = true)
     private String email;
 
-    @Column
+
     private BigDecimal EUR_amount;
 
-    @Column
+
     private BigDecimal USD_amount;
 
-    @Column
+
     private BigDecimal GBP_amount;
 
-    @Column
+
     private BigDecimal CHF_amount;
 
-    @Column
+
     private BigDecimal RSD_amount;
 
     @Transient

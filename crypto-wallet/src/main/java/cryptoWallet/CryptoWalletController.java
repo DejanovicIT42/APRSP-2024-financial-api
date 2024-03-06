@@ -147,6 +147,37 @@ public class CryptoWalletController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    //todo: changeCryptoWalletBalance
-//    public ResponseEntity<CryptoWallet> transferCryptoBalance()
+    @PutMapping("/transfer")
+    public ResponseEntity<CryptoWallet> transferCryptoWallet(@RequestBody TransferDto transferDto) throws Exception{
+
+        CryptoWallet fromWallet = repo.findByEmail(transferDto.getFromWallet());
+        CryptoWallet toWallet = repo.findByEmail(transferDto.getToWallet());
+
+        if(fromWallet == null || toWallet == null) {
+            throw new CustomExceptions.NotFoundException("This wallet doesn't exist");
+        }
+
+        switch (transferDto.getFiatValue()){
+            case "BTC":
+                fromWallet.setBTC_amount(fromWallet.getBTC_amount().subtract(transferDto.getFromQuantity()));
+                toWallet.setBTC_amount(toWallet.getBTC_amount().add(transferDto.getToQuantity()));
+                break;
+            case "ETH":
+                fromWallet.setETH_amount(fromWallet.getETH_amount().subtract(transferDto.getFromQuantity()));
+                toWallet.setETH_amount(toWallet.getETH_amount().add(transferDto.getToQuantity()));
+                break;
+            case "LUNA":
+                fromWallet.setLUNA_amount(fromWallet.getLUNA_amount().subtract(transferDto.getFromQuantity()));
+                toWallet.setLUNA_amount(toWallet.getLUNA_amount().add(transferDto.getToQuantity()));
+                break;
+            default:
+                throw new CustomExceptions.YouCantDoThatException("This fiat value " + transferDto.getFiatValue() + " is not supported.");
+        }
+
+        repo.save(fromWallet);
+        repo.save(toWallet);
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
+
 }

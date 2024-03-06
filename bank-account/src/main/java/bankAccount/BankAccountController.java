@@ -203,7 +203,7 @@ public class BankAccountController {
                 toAccount.setRSD_amount(toAccount.getRSD_amount().add(transferDto.getToQuantity()));
                 break;
             default:
-                throw new CustomExceptions.YouCantDoThatException("Currency " + transferDto.getCurrency() + " is not supported");
+                throw new CustomExceptions.YouCantDoThatException("Currency " + transferDto.getCurrency() + " is not supported.");
         }
 
         repo.save(fromAccount);
