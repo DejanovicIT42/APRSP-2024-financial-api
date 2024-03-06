@@ -116,6 +116,8 @@ public class CryptoWalletController {
                     throw new CustomExceptions.YouCantDoThatException("You don't have enough in your wallet.");
                 wallet.setLUNA_amount(wallet.getLUNA_amount().subtract(quantityFrom));
                 break;
+            default:
+                throw new CustomExceptions.YouCantDoThatException(cryptoFrom + " is not supported,");
         }
 
         switch (cryptoTo) {
@@ -128,6 +130,8 @@ public class CryptoWalletController {
             case "LUNA":
                 wallet.setLUNA_amount(wallet.getLUNA_amount().add(quantityTo));
                 break;
+            default:
+                throw new CustomExceptions.YouCantDoThatException(cryptoTo + " is not supported,");
         }
 
         CryptoWallet updatedWallet = repo.save(wallet);
@@ -159,14 +163,20 @@ public class CryptoWalletController {
 
         switch (transferDto.getFiatValue()){
             case "BTC":
+                if(fromWallet.getBTC_amount().compareTo(transferDto.getFromQuantity()) <= 0)
+                    throw new CustomExceptions.YouCantDoThatException("TRANSFER DENIED - Insufficient finds.");
                 fromWallet.setBTC_amount(fromWallet.getBTC_amount().subtract(transferDto.getFromQuantity()));
                 toWallet.setBTC_amount(toWallet.getBTC_amount().add(transferDto.getToQuantity()));
                 break;
             case "ETH":
+                if(fromWallet.getETH_amount().compareTo(transferDto.getFromQuantity()) <= 0)
+                    throw new CustomExceptions.YouCantDoThatException("TRANSFER DENIED - Insufficient finds.");
                 fromWallet.setETH_amount(fromWallet.getETH_amount().subtract(transferDto.getFromQuantity()));
                 toWallet.setETH_amount(toWallet.getETH_amount().add(transferDto.getToQuantity()));
                 break;
             case "LUNA":
+                if(fromWallet.getLUNA_amount().compareTo(transferDto.getFromQuantity()) <= 0)
+                    throw new CustomExceptions.YouCantDoThatException("TRANSFER DENIED - Insufficient finds.");
                 fromWallet.setLUNA_amount(fromWallet.getLUNA_amount().subtract(transferDto.getFromQuantity()));
                 toWallet.setLUNA_amount(toWallet.getLUNA_amount().add(transferDto.getToQuantity()));
                 break;

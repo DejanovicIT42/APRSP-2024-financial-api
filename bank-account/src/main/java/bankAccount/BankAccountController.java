@@ -65,7 +65,7 @@ public class BankAccountController {
     public ResponseEntity<BankAccount> updateBankAccount(@PathVariable String email, @RequestBody BankAccount account, HttpServletRequest request) throws Exception {
         BankAccount checkUser = repo.findByEmail(email);
         if (checkUser == null)
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new CustomExceptions.AccountNotFoundException("This bank account does not exist.");
 
         account.setEmail(email);
 
@@ -92,7 +92,7 @@ public class BankAccountController {
             @PathVariable BigDecimal quantityTo, @PathVariable String currencyTo) throws Exception {
         BankAccount account = repo.findByEmail(email);
         if (account == null)
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new CustomExceptions.AccountNotFoundException("This bank account does not exist.");
 
         if (Objects.equals(currencyFrom, currencyTo))
             throw new CustomExceptions.YouCantDoThatException("Cannot convert from " + currencyFrom + " to " + currencyTo);
@@ -100,57 +100,51 @@ public class BankAccountController {
         switch (currencyFrom) {
             case "EUR":
                 if (account.getEUR_amount().compareTo(quantityFrom) < 0)
-                    throw new CustomExceptions.YouCantDoThatException("You broke.");
+                    throw new CustomExceptions.YouCantDoThatException("Insufficient finds.");
                 account.setEUR_amount(account.getEUR_amount().subtract(quantityFrom));
                 break;
             case "USD":
                 if (account.getUSD_amount().compareTo(quantityFrom) < 0)
-                    throw new CustomExceptions.YouCantDoThatException("You broke.");
+                    throw new CustomExceptions.YouCantDoThatException("Insufficient finds.");
                 account.setUSD_amount(account.getUSD_amount().subtract(quantityFrom));
                 break;
             case "GBP":
                 if (account.getGBP_amount().compareTo(quantityFrom) < 0)
-                    throw new CustomExceptions.YouCantDoThatException("You broke.");
+                    throw new CustomExceptions.YouCantDoThatException("Insufficient finds.");
                 account.setGBP_amount(account.getGBP_amount().subtract(quantityFrom));
                 break;
             case "CHF":
                 if (account.getCHF_amount().compareTo(quantityFrom) < 0)
-                    throw new CustomExceptions.YouCantDoThatException("You broke.");
+                    throw new CustomExceptions.YouCantDoThatException("Insufficient finds.");
                 account.setCHF_amount(account.getCHF_amount().subtract(quantityFrom));
                 break;
             case "RSD":
                 if (account.getRSD_amount().compareTo(quantityFrom) < 0)
-                    throw new CustomExceptions.YouCantDoThatException("You broke.");
+                    throw new CustomExceptions.YouCantDoThatException("Insufficient finds.");
                 account.setRSD_amount(account.getRSD_amount().subtract(quantityFrom));
                 break;
+            default:
+                throw new CustomExceptions.YouCantDoThatException(currencyFrom + " is not supported.");
         }
 
         switch (currencyTo) {
             case "EUR":
-                if (account.getEUR_amount().compareTo(quantityTo) < 0)
-                    throw new CustomExceptions.YouCantDoThatException("You broke.");
                 account.setEUR_amount(account.getEUR_amount().add(quantityTo));
                 break;
             case "USD":
-                if (account.getUSD_amount().compareTo(quantityTo) < 0)
-                    throw new CustomExceptions.YouCantDoThatException("You broke.");
                 account.setUSD_amount(account.getUSD_amount().add(quantityTo));
                 break;
             case "GBP":
-                if (account.getGBP_amount().compareTo(quantityTo) < 0)
-                    throw new CustomExceptions.YouCantDoThatException("You broke.");
                 account.setGBP_amount(account.getGBP_amount().add(quantityTo));
                 break;
             case "CHF":
-                if (account.getCHF_amount().compareTo(quantityTo) < 0)
-                    throw new CustomExceptions.YouCantDoThatException("You broke.");
                 account.setCHF_amount(account.getCHF_amount().add(quantityTo));
                 break;
             case "RSD":
-                if (account.getRSD_amount().compareTo(quantityTo) < 0)
-                    throw new CustomExceptions.YouCantDoThatException("You broke.");
                 account.setRSD_amount(account.getRSD_amount().add(quantityTo));
                 break;
+            default:
+                throw new CustomExceptions.YouCantDoThatException(currencyTo + " is not supported.");
         }
 
         BankAccount updatedAccount = repo.save(account);
@@ -177,28 +171,39 @@ public class BankAccountController {
         BankAccount fromAccount = repo.findByEmail(transferDto.getFromAccount());
         BankAccount toAccount = repo.findByEmail(transferDto.getToAccount());
 
+
         if(fromAccount == null || toAccount == null) {
             throw new CustomExceptions.AccountNotFoundException("Bank account doesn't exist.");
         }
 
         switch (transferDto.getCurrency()) {
             case "EUR":
+                if (fromAccount.getEUR_amount().compareTo(transferDto.getFromQuantity()) <= 0)
+                    throw new CustomExceptions.YouCantDoThatException("TRANSFER DENIED - Insufficient finds.");
                 fromAccount.setEUR_amount(fromAccount.getEUR_amount().subtract(transferDto.getFromQuantity()));
                 toAccount.setEUR_amount(toAccount.getEUR_amount().add(transferDto.getToQuantity()));
                 break;
             case "USD":
+                if (fromAccount.getUSD_amount().compareTo(transferDto.getFromQuantity()) <= 0)
+                    throw new CustomExceptions.YouCantDoThatException("TRANSFER DENIED - Insufficient finds.");
                 fromAccount.setUSD_amount(fromAccount.getUSD_amount().subtract(transferDto.getFromQuantity()));
                 toAccount.setUSD_amount(toAccount.getUSD_amount().add(transferDto.getToQuantity()));
                 break;
             case "GBP":
+                if (fromAccount.getGBP_amount().compareTo(transferDto.getFromQuantity()) <= 0)
+                    throw new CustomExceptions.YouCantDoThatException("TRANSFER DENIED - Insufficient finds.");
                 fromAccount.setGBP_amount(fromAccount.getGBP_amount().subtract(transferDto.getFromQuantity()));
                 toAccount.setGBP_amount(toAccount.getGBP_amount().add(transferDto.getToQuantity()));
                 break;
             case "CHF":
+                if (fromAccount.getCHF_amount().compareTo(transferDto.getFromQuantity()) <= 0)
+                    throw new CustomExceptions.YouCantDoThatException("TRANSFER DENIED - Insufficient finds.");
                 fromAccount.setCHF_amount(fromAccount.getCHF_amount().subtract(transferDto.getFromQuantity()));
                 toAccount.setCHF_amount(toAccount.getCHF_amount().add(transferDto.getToQuantity()));
                 break;
             case "RSD":
+                if (fromAccount.getRSD_amount().compareTo(transferDto.getFromQuantity()) <= 0)
+                    throw new CustomExceptions.YouCantDoThatException("TRANSFER DENIED - Insufficient finds.");
                 fromAccount.setRSD_amount(fromAccount.getRSD_amount().subtract(transferDto.getFromQuantity()));
                 toAccount.setRSD_amount(toAccount.getRSD_amount().add(transferDto.getToQuantity()));
                 break;
