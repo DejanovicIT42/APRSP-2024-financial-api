@@ -36,10 +36,10 @@ public class CryptoConversionController {
         }
     }
 
-    @PostMapping("/from/{from}/to/{to}/quantity/{quantity}")
-    public ResponseEntity<CryptoWalletDto> getConversion(@PathVariable String from,
-                                                         @PathVariable String to,
-                                                         @PathVariable BigDecimal quantity,
+    @PostMapping()
+    public ResponseEntity<CryptoWalletDto> getConversion(@RequestParam String from,
+                                                         @RequestParam String to,
+                                                         @RequestParam BigDecimal quantity,
                                                          HttpServletRequest request) throws Exception{
         String requestEmail = request.getHeader("X-User-Email");
         if(requestEmail == null)

@@ -10,6 +10,7 @@
         <module name="users-service" />
         <module name="currency-conversion" />
         <module name="bank-account" />
+        <module name="trade-service" />
         <module name="crypto-conversion" />
         <module name="api-gateway" />
         <module name="currency-exchange" />
@@ -29,6 +30,7 @@
       <module name="currency-conversion" options="-parameters" />
       <module name="currency-exchange" options="-parameters" />
       <module name="naming-server" options="-parameters" />
+      <module name="trade-service" options="-parameters" />
       <module name="transfer-service" options="-parameters" />
       <module name="users-service" options="-parameters" />
     </option>

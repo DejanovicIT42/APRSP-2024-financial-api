@@ -14,13 +14,12 @@ public class CryptoWallet {
     @Column(unique = true)
     private String email;
 
-    @Column
     private BigDecimal BTC_amount;
 
-    @Column
+
     private BigDecimal ETH_amount;
 
-    @Column
+
     private BigDecimal LUNA_amount;
 
     @Transient

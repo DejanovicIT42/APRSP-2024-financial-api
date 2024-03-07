@@ -25,10 +25,10 @@ public class CurrencyConversionController {
     private BankAccountProxy bankAccountProxy;
 
     //localhost:8100/currency-conversion/from/EUR/to/RSD/quantity/100
-    @PostMapping("/from/{from}/to/{to}/quantity/{quantity}")
-    public ResponseEntity<BankAccountDto> getConversion(@PathVariable String from,
-                                                        @PathVariable String to,
-                                                        @PathVariable BigDecimal quantity,
+    @PostMapping()
+    public ResponseEntity<BankAccountDto> getConversion(@RequestParam String from,
+                                                        @RequestParam String to,
+                                                        @RequestParam BigDecimal quantity,
                                                         HttpServletRequest request) throws Exception {
 
         String requestEmail = request.getHeader("X-User-Email");
