@@ -1,0 +1,672 @@
+{
+	"info": {
+		"_postman_id": "f8416627-b8f1-4f1d-887b-5d6bb79433eb",
+		"name": "Agilne",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31100901"
+	},
+	"item": [
+		{
+			"name": "user-service",
+			"item": [
+				{
+					"name": "GetAllUsers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8765/users-service/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8765",
+							"path": [
+								"users-service",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 11,\r\n    \"email\": \"zivko@gmail.com\",\r\n    \"password\": \"password\",\r\n    \"role\": \"USER\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8765/users-service/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8765",
+							"path": [
+								"users-service",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateUser",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 11,\r\n    \"email\": \"zivko@gmail.com\",\r\n    \"password\": \"passwordIZMENJEN\",\r\n    \"role\": \"USER\"\r\n}\r\n\r\n// {\r\n//     \"id\": 2,\r\n//     \"email\": \"vladimir_fabri98@uns.ac.rs\",\r\n//     \"password\": \"password1IZMENJEN\",\r\n//     \"role\": \"ADMIN\"\r\n// }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8765/users-service/users/update/vladimir_fabri98@uns.ac.rs",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8765",
+							"path": [
+								"users-service",
+								"users",
+								"update",
+								"vladimir_fabri98@uns.ac.rs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteUser",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8765/users-service/users/delete/zivko@gmail.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8765",
+							"path": [
+								"users-service",
+								"users",
+								"delete",
+								"zivko@gmail.com"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "bank-account",
+			"item": [
+				{
+					"name": "GetAccount",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8765/bank-account/get/abc@gmail.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8765",
+							"path": [
+								"bank-account",
+								"get",
+								"abc@gmail.com"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateAccount",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 2,\r\n    \"email\": \"zivko@gmail.com\",\r\n    \"eur_amount\": 220.00,\r\n    \"usd_amount\": 120.00,\r\n    \"chf_amount\": 50.00,\r\n    \"gbp_amount\": 200.00,\r\n    \"rsd_amount\": 8000.00\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8765/bank-account",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8765",
+							"path": [
+								"bank-account"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateAccount",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"eur_amount\": 780000.00,\r\n    \"usd_amount\": 120.00,\r\n    \"chf_amount\": 50.00,\r\n    \"gbp_amount\": 200.00,\r\n    \"rsd_amount\": 8000.00\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8765/bank-account/abc@gmail.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8765",
+							"path": [
+								"bank-account",
+								"abc@gmail.com"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateAccountBalace",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8765/bank-account/zivko@gmail.com/decrease/10/from/EUR/increase/10/from/RSD",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8765",
+							"path": [
+								"bank-account",
+								"zivko@gmail.com",
+								"decrease",
+								"10",
+								"from",
+								"EUR",
+								"increase",
+								"10",
+								"from",
+								"RSD"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeletedAccount",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8765/bank-account/zivko@gmail.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8765",
+							"path": [
+								"bank-account",
+								"zivko@gmail.com"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "currency-exchange",
+			"item": [
+				{
+					"name": "GetCurrencyConversion",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8765/currency-exchange/from/RSD/to/EUR",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8765",
+							"path": [
+								"currency-exchange",
+								"from",
+								"RSD",
+								"to",
+								"EUR"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "currency-conversion",
+			"item": [
+				{
+					"name": "CurrencyConversion",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8765/currency-conversion?from=EUR&to=CHF&quantity=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8765",
+							"path": [
+								"currency-conversion"
+							],
+							"query": [
+								{
+									"key": "from",
+									"value": "EUR"
+								},
+								{
+									"key": "to",
+									"value": "CHF"
+								},
+								{
+									"key": "quantity",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "wallet",
+			"item": [
+				{
+					"name": "GetWalletByUserEmail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8300/crypto-wallet/abc@gmail.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8300",
+							"path": [
+								"crypto-wallet",
+								"abc@gmail.com"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateCryptoWallet",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 2,\r\n    \"email\": \"zivko@gmail.com\",\r\n    \"eth_amount\": 9.00,\r\n    \"btc_amount\": 400.00,\r\n    \"luna_amount\": 200.00\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8765/crypto-wallet",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8765",
+							"path": [
+								"crypto-wallet"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateWallet",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"email\": \"abc@gmail.com\",\r\n    \"eth_amount\": 1000.00,\r\n    \"btc_amount\": 400.00,\r\n    \"luna_amount\": 200.00\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8765/crypto-wallet/abc@gmail.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8765",
+							"path": [
+								"crypto-wallet",
+								"abc@gmail.com"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateWalletBalance",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8765/crypto-wallet/abc@gmail.com/decrease/10/from/LUNA/increase/10/from/BTC",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8765",
+							"path": [
+								"crypto-wallet",
+								"abc@gmail.com",
+								"decrease",
+								"10",
+								"from",
+								"LUNA",
+								"increase",
+								"10",
+								"from",
+								"BTC"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeletedWallet",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8765/crypto-wallet/zivko@gmail.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8765",
+							"path": [
+								"crypto-wallet",
+								"zivko@gmail.com"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "crypto-exchange",
+			"item": [
+				{
+					"name": "GetCrypto",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8765/crypto-exchange/from/BTC/to/LUNA",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8765",
+							"path": [
+								"crypto-exchange",
+								"from",
+								"BTC",
+								"to",
+								"LUNA"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "crypto-conversion",
+			"item": [
+				{
+					"name": "GetCryptoConversion",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8765/crypto-conversion?from=LUNA&to=BTC&quantity=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8765",
+							"path": [
+								"crypto-conversion"
+							],
+							"query": [
+								{
+									"key": "from",
+									"value": "LUNA"
+								},
+								{
+									"key": "to",
+									"value": "BTC"
+								},
+								{
+									"key": "quantity",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CryptoConversion",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8765/crypto-conversion?from=BTC&to=LUNA&quantity=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8765",
+							"path": [
+								"crypto-conversion"
+							],
+							"query": [
+								{
+									"key": "from",
+									"value": "BTC"
+								},
+								{
+									"key": "to",
+									"value": "LUNA"
+								},
+								{
+									"key": "quantity",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "transfer-service",
+			"item": [
+				{
+					"name": "TransferBalance",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8765/transfer-service?currency=LUNA&to=abcd@gmail.com&quantity=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8765",
+							"path": [
+								"transfer-service"
+							],
+							"query": [
+								{
+									"key": "currency",
+									"value": "LUNA"
+								},
+								{
+									"key": "to",
+									"value": "abcd@gmail.com"
+								},
+								{
+									"key": "quantity",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "trade-service",
+			"item": [
+				{
+					"name": "Trade",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8765/trade-service?from=EUR&to=LUNA&quantity=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8765",
+							"path": [
+								"trade-service"
+							],
+							"query": [
+								{
+									"key": "from",
+									"value": "EUR"
+								},
+								{
+									"key": "to",
+									"value": "LUNA"
+								},
+								{
+									"key": "quantity",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "username",
+				"value": "abc@gmail.com",
+				"type": "string"
+			},
+			{
+				"key": "password",
+				"value": "password707",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

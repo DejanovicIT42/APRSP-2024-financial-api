@@ -4,11 +4,17 @@
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
-        <option value="$PROJECT_DIR$/api-gateway/pom.xml" />
-        <option value="$PROJECT_DIR$/currency-conversion/pom.xml" />
-        <option value="$PROJECT_DIR$/currency-exchange/pom.xml" />
-        <option value="$PROJECT_DIR$/namingServer/pom.xml" />
         <option value="$PROJECT_DIR$/users-service/pom.xml" />
+        <option value="$PROJECT_DIR$/namingServer/pom.xml" />
+        <option value="$PROJECT_DIR$/currency-exchange/pom.xml" />
+        <option value="$PROJECT_DIR$/currency-conversion/pom.xml" />
+        <option value="$PROJECT_DIR$/crypto-wallet/pom.xml" />
+        <option value="$PROJECT_DIR$/crypto-exchange/pom.xml" />
+        <option value="$PROJECT_DIR$/bank-account/pom.xml" />
+        <option value="$PROJECT_DIR$/api-gateway/pom.xml" />
+        <option value="$PROJECT_DIR$/crypto-conversion/pom.xml" />
+        <option value="$PROJECT_DIR$/transfer-service/pom.xml" />
+        <option value="$PROJECT_DIR$/trade-service/pom.xml" />
       </list>
     </option>
   </component>

@@ -1,58 +1,57 @@
 package usersService.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import usersService.Role;
 
-@Entity
+@Entity(name = "CUSTOM_USER")
 public class CustomUser {
 
-	@Id
-	private long id;
+    @Id
+    private long id;
 
-	@Column(unique = true, nullable = false)
-	private String email;
-	@Column(nullable = false)
-	private String password;
-	@Column(nullable = false, columnDefinition = "VARCHAR(20) CHECK(role IN('ADMIN','USER'))")
-	private String role;
+    @Column(unique = true, nullable = false)
+    private String email;
+    @Column(nullable = false)
+    private String password;
 
-	
-	//KONSTRUKTOR I GET I SET METODE
-	public CustomUser() {
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
-	}
+    //KONSTRUKTOR I GET I SET METODE
+    public CustomUser() {
 
-	public long getId() {
-		return id;
-	}
+    }
 
-	public void setId(long id) {
-		this.id = id;
-	}
+    public long getId() {
+        return id;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public void setId(long id) {
+        this.id = id;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public String getRole() {
-		return role;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public void setRole(String role) {
-		this.role = role;
-	}
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 
 }

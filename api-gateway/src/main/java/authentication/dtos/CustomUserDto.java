@@ -2,33 +2,34 @@ package authentication.dtos;
 
 public class CustomUserDto {
 
-	private String email;
-	private String password;
-	private String role;
+    private String email;
+    private String password;
 
-	//GET I SET METODE
-	public String getEmail() {
-		return email;
-	}
+    private Role role;
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    //GET I SET METODE
+    public String getEmail() {
+        return email;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public String getRole() {
-		return role;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public void setRole(String role) {
-		this.role = role;
-	}
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 
 }

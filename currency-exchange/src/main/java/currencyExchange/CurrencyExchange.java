@@ -1,78 +1,80 @@
 package currencyExchange;
 
-import java.math.BigDecimal;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Transient;
 
+import java.math.BigDecimal;
+
 @Entity
 public class CurrencyExchange {
 
-	@Id
-	private long id;
-	
-	@Column(name = "currency_from")
-	private String from;
-	
-	@Column(name = "currency_to")
-	private String to;
-	private BigDecimal conversionMultiple;
-	
-	@Transient
-	private String environment;
+    @Id
+    private long id;
 
-	public CurrencyExchange() {
-		
-	}
-	
-	public CurrencyExchange(long id, String from, String to, BigDecimal conversionMultiple, String environment) {
-		this.id = id;
-		this.from = from;
-		this.to = to;
-		this.conversionMultiple = conversionMultiple;
-		this.environment = environment;
-	}
+    @Column(name = "currency_from")
+    private String from;
 
-	public long getId() {
-		return id;
-	}
+    @Column(name = "currency_to")
+    private String to;
 
-	public void setId(long id) {
-		this.id = id;
-	}
+    @Column(name = "conversion_multiple", precision = 38, scale = 4)
+    private BigDecimal conversionMultiple;
 
-	public String getFrom() {
-		return from;
-	}
+    @Transient
+    private String environment;
 
-	public void setFrom(String from) {
-		this.from = from;
-	}
+    public CurrencyExchange() {
 
-	public String getTo() {
-		return to;
-	}
+    }
 
-	public void setTo(String to) {
-		this.to = to;
-	}
+    public CurrencyExchange(long id, String from, String to, BigDecimal conversionMultiple, String environment) {
+        this.id = id;
+        this.from = from;
+        this.to = to;
+        this.conversionMultiple = conversionMultiple;
+        this.environment = environment;
+    }
 
-	public BigDecimal getConversionMultiple() {
-		return conversionMultiple;
-	}
+    public long getId() {
+        return id;
+    }
 
-	public void setConversionMultiple(BigDecimal conversionMultiple) {
-		this.conversionMultiple = conversionMultiple;
-	}
+    public void setId(long id) {
+        this.id = id;
+    }
 
-	public String getEnvironment() {
-		return environment;
-	}
+    public String getFrom() {
+        return from;
+    }
 
-	public void setEnvironment(String environment) {
-		this.environment = environment;
-	}
+    public void setFrom(String from) {
+        this.from = from;
+    }
+
+    public String getTo() {
+        return to;
+    }
+
+    public void setTo(String to) {
+        this.to = to;
+    }
+
+    public BigDecimal getConversionMultiple() {
+        return conversionMultiple;
+    }
+
+    public void setConversionMultiple(BigDecimal conversionMultiple) {
+        this.conversionMultiple = conversionMultiple;
+    }
+
+    public String getEnvironment() {
+        return environment;
+    }
+
+    public void setEnvironment(String environment) {
+        this.environment = environment;
+    }
 
 }
