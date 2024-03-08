@@ -53,40 +53,62 @@ public class TradeController {
         CryptoWalletDto userCryptoWallet = walletProxy.getCryptoWallet(email).getBody();
 
 
-        Trade trade = repo.findByFromAndTo(from, to);
-        BigDecimal conversionMultiple = trade.getConversionMultiple();
+        Trade trade;
+        BigDecimal conversionMultiple;
+
 
 
         if(fiatCurrency.contains(from) && cryptoCurrency.contains(to)) {
             switch (from){
                 case "EUR":
+                    trade = repo.findByFromAndTo(from, to);
+                    conversionMultiple = trade.getConversionMultiple();
+                    if(userBankAccount.getEUR_amount().compareTo(quantity) < 0)
+                        throw new CustomExceptions.YouCantDoThatException("TRANSACTION DENIED - You don't have enough in your bank account.");
                     userBankAccount.setEUR_amount(userBankAccount.getEUR_amount().subtract(quantity));
                     accountProxy.updateBankAccount(email, userBankAccount);
                     break;
                 case "USD":
+                    trade = repo.findByFromAndTo(from, to);
+                    conversionMultiple = trade.getConversionMultiple();
+                    if(userBankAccount.getUSD_amount().compareTo(quantity) < 0)
+                        throw new CustomExceptions.YouCantDoThatException("TRANSACTION DENIED - You don't have enough in your bank account.");
                     userBankAccount.setUSD_amount(userBankAccount.getUSD_amount().subtract(quantity));
                     accountProxy.updateBankAccount(email, userBankAccount);
                     break;
 
                 case "CHF":
-                    conversionProxy.getConversion("CHF", "EUR", quantity);
+                    trade = repo.findByFromAndTo("EUR", to);
+                    conversionMultiple = trade.getConversionMultiple();
+                    if(userBankAccount.getCHF_amount().compareTo(quantity) < 0)
+                        throw new CustomExceptions.YouCantDoThatException("TRANSACTION DENIED - You don't have enough in your bank account.");
+                    conversionProxy.getConversion("CHF", "EUR", quantity, email);
                     userBankAccount.setEUR_amount(userBankAccount.getEUR_amount().subtract(quantity));
                     accountProxy.updateBankAccount(email, userBankAccount);
                     break;
-                //needs changing
                 case "GBP":
-                    ResponseEntity<CurrencyConversionDto> GBPtoEUR = conversionProxy.getConversion(from, to, quantity);
-                    userBankAccount.setGBP_amount(userBankAccount.getGBP_amount().subtract(GBPtoEUR.getBody().getConversionMultiple()));
+                    trade = repo.findByFromAndTo("EUR", to);
+                    conversionMultiple = trade.getConversionMultiple();
+                    if(userBankAccount.getGBP_amount().compareTo(quantity) < 0)
+                        throw new CustomExceptions.YouCantDoThatException("TRANSACTION DENIED - You don't have enough in your bank account.");
+                    conversionProxy.getConversion("GBP", "EUR", quantity, email);
+                    userBankAccount.setEUR_amount(userBankAccount.getEUR_amount().subtract(quantity));
                     accountProxy.updateBankAccount(email, userBankAccount);
                     break;
                 case "RSD":
-                    ResponseEntity<CurrencyConversionDto> RSDtoEUR = conversionProxy.getConversion(from, to, quantity);
-                    userBankAccount.setRSD_amount(userBankAccount.getRSD_amount().subtract(RSDtoEUR.getBody().getConversionMultiple()));
+                    trade = repo.findByFromAndTo("EUR", to);
+                    conversionMultiple = trade.getConversionMultiple();
+                    if(userBankAccount.getRSD_amount().compareTo(quantity) < 0)
+                        throw new CustomExceptions.YouCantDoThatException("TRANSACTION DENIED - You don't have enough in your bank account.");
+                    conversionProxy.getConversion("RSD", "EUR", quantity, email);
+                    userBankAccount.setEUR_amount(userBankAccount.getEUR_amount().subtract(quantity));
                     accountProxy.updateBankAccount(email, userBankAccount);
                     break;
                 default:
                     throw new CustomExceptions.YouCantDoThatException(from + " is not supported fiat value.");
             }
+
+
 
             switch (to){
                 case "BTC":
@@ -109,6 +131,7 @@ public class TradeController {
             TradeCryptoDto cryptoResponse = new TradeCryptoDto();
             cryptoResponse.setId(cryptoWalletTraded.getId());
             cryptoResponse.setEmail(cryptoWalletTraded.getEmail());
+            cryptoResponse.setEnvironment(cryptoWalletTraded.getEnvironment());
             cryptoResponse.setBTC_amount(cryptoWalletTraded.getBTC_amount());
             cryptoResponse.setETH_amount(cryptoWalletTraded.getETH_amount());
             cryptoResponse.setLUNA_amount(cryptoWalletTraded.getLUNA_amount());
@@ -118,14 +141,20 @@ public class TradeController {
         } else if (cryptoCurrency.contains(from) && fiatCurrency.contains(to)) {
             switch (from) {
                 case "BTC":
+                    if(userCryptoWallet.getBTC_amount().compareTo(quantity) < 0)
+                        throw new CustomExceptions.YouCantDoThatException("TRANSACTION DENIED - You don't have enough in your wallet.");
                     userCryptoWallet.setBTC_amount(userCryptoWallet.getBTC_amount().subtract(quantity));
                     walletProxy.updateCryptoWallet(email, userCryptoWallet);
                     break;
                 case "ETH":
+                    if(userCryptoWallet.getETH_amount().compareTo(quantity) < 0)
+                        throw new CustomExceptions.YouCantDoThatException("TRANSACTION DENIED - You don't have enough in your wallet.");
                     userCryptoWallet.setETH_amount(userCryptoWallet.getETH_amount().subtract(quantity));
                     walletProxy.updateCryptoWallet(email, userCryptoWallet);
                     break;
                 case "LUNA":
+                    if(userCryptoWallet.getLUNA_amount().compareTo(quantity) < 0)
+                        throw new CustomExceptions.YouCantDoThatException("TRANSACTION DENIED - You don't have enough in your wallet.");
                     userCryptoWallet.setLUNA_amount(userCryptoWallet.getLUNA_amount().subtract(quantity));
                     walletProxy.updateCryptoWallet(email, userCryptoWallet);
                     break;
@@ -135,28 +164,38 @@ public class TradeController {
 
             switch (to) {
                 case "EUR":
+                    trade = repo.findByFromAndTo(from, to);
+                    conversionMultiple = trade.getConversionMultiple();
                     userBankAccount.setEUR_amount(userBankAccount.getEUR_amount().add(quantity.multiply(conversionMultiple)));
                     accountProxy.updateBankAccount(email, userBankAccount);
                     break;
                 case "USD":
-                    userBankAccount.setEUR_amount(userBankAccount.getUSD_amount().add(quantity.multiply(conversionMultiple)));
+                    trade = repo.findByFromAndTo(from, to);
+                    conversionMultiple = trade.getConversionMultiple();
+                    userBankAccount.setUSD_amount(userBankAccount.getUSD_amount().add(quantity.multiply(conversionMultiple)));
                     accountProxy.updateBankAccount(email, userBankAccount);
                     break;
 
                 case "CHF":
+                    trade = repo.findByFromAndTo(from, "EUR");
+                    conversionMultiple = trade.getConversionMultiple();
                     userBankAccount.setEUR_amount(userBankAccount.getEUR_amount().add(quantity.multiply(conversionMultiple)));
                     accountProxy.updateBankAccount(email, userBankAccount);
-                    conversionProxy.getConversion("EUR", "CHF", quantity.multiply(conversionMultiple));
+                    conversionProxy.getConversion("EUR", "CHF", quantity.multiply(conversionMultiple), email);
                     break;
                 case "GBP":
+                    trade = repo.findByFromAndTo(from, "EUR");
+                    conversionMultiple = trade.getConversionMultiple();
                     userBankAccount.setEUR_amount(userBankAccount.getEUR_amount().add(quantity.multiply(conversionMultiple)));
                     accountProxy.updateBankAccount(email, userBankAccount);
-                    conversionProxy.getConversion("EUR", "GBP", quantity.multiply(conversionMultiple));
+                    conversionProxy.getConversion("EUR", "GBP", quantity.multiply(conversionMultiple), email);
                     break;
                 case "RSD":
+                    trade = repo.findByFromAndTo(from, "EUR");
+                    conversionMultiple = trade.getConversionMultiple();
                     userBankAccount.setEUR_amount(userBankAccount.getEUR_amount().add(quantity.multiply(conversionMultiple)));
                     accountProxy.updateBankAccount(email, userBankAccount);
-                    conversionProxy.getConversion("EUR", "RSD", quantity.multiply(conversionMultiple));
+                    conversionProxy.getConversion("EUR", "RSD", quantity.multiply(conversionMultiple), email);
                     break;
                 default:
                     throw new CustomExceptions.YouCantDoThatException(to + " is not supported fiat value.");
@@ -166,6 +205,7 @@ public class TradeController {
             TradeFiatDto fiatResponse = new TradeFiatDto();
             fiatResponse.setId(bankAccountTraded.getId());
             fiatResponse.setEmail(bankAccountTraded.getEmail());
+            fiatResponse.setEnvironment(bankAccountTraded.getEnvironment());
             fiatResponse.setEUR_amount(bankAccountTraded.getEUR_amount());
             fiatResponse.setUSD_amount(bankAccountTraded.getUSD_amount());
             fiatResponse.setCHF_amount(bankAccountTraded.getCHF_amount());

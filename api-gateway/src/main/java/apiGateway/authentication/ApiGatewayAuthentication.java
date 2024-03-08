@@ -69,7 +69,7 @@ public class ApiGatewayAuthentication {
                 .pathMatchers(HttpMethod.PUT, "/users-service/**").hasAnyRole("ADMIN", "OWNER")
                 .pathMatchers(HttpMethod.DELETE, "/users-service/**").hasRole("OWNER")
                 .pathMatchers("/currency-conversion/**").hasRole("USER")
-                .pathMatchers(HttpMethod.GET, "/bank-account/get/{email}").hasAnyRole("ADMIN", "OWNER")
+                .pathMatchers(HttpMethod.GET, "/bank-account/**").permitAll()
                 .pathMatchers(HttpMethod.POST, "/bank-account").hasRole("ADMIN")
                 .pathMatchers(HttpMethod.PUT, "/bank-account/{email}").hasRole("ADMIN")
                 .pathMatchers(HttpMethod.PUT, "/bank-account/{email}/decrease/**").hasRole("ADMIN")
