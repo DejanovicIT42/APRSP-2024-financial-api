@@ -63,7 +63,8 @@ public class CryptoWalletController {
     }
 
     @PutMapping("/{email}")
-    public ResponseEntity<CryptoWallet> updateCryptoWallet(@PathVariable String email, @RequestBody CryptoWallet wallet) throws Exception {
+    public ResponseEntity<CryptoWallet> updateCryptoWallet(@PathVariable String email,
+                                                           @RequestBody CryptoWallet wallet) throws Exception {
         CryptoWallet checkUser = repo.findByEmail(email);
 
         if (checkUser == null)

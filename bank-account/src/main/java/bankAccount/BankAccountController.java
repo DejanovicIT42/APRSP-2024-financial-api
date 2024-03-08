@@ -62,7 +62,8 @@ public class BankAccountController {
     }
 
     @PutMapping("/{email}")
-    public ResponseEntity<BankAccount> updateBankAccount(@PathVariable String email, @RequestBody BankAccount account, HttpServletRequest request) throws Exception {
+    public ResponseEntity<BankAccount> updateBankAccount(@PathVariable String email,
+                                                         @RequestBody BankAccount account) throws Exception {
         BankAccount checkUser = repo.findByEmail(email);
         if (checkUser == null)
             throw new CustomExceptions.AccountNotFoundException("This bank account does not exist.");
