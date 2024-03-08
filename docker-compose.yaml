@@ -3,6 +3,24 @@ version: '3.7'
 name: agilne-2024-elena-dejanovic
 services:
 
+  api-gateway:
+    image: elenadejanovic/api-gateway:latest
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8765:8765"
+    networks:
+      - currency-network
+    depends_on:
+      - naming-server
+      - users-service
+      - bank-account
+      - currency-exchange
+      - currency-conversion
+    environment:
+      EUREKA.CLIENT.SERVICE-URL.DEFAULTZONE: http://naming-server:8761/eureka
+
   bank-account:
     image: elenadejanovic/bank-account:latest
     build:
@@ -10,6 +28,48 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8200:8200"
+    networks:
+      - currency-network
+    depends_on:
+      - naming-server
+    environment:
+      EUREKA.CLIENT.SERVICE-URL.DEFAULTZONE: http://naming-server:8761/eureka
+
+  crypto-conversion:
+    image: elenadejanovic/crypto-conversion:latest
+    build:
+      context: ./crypto-conversion
+      dockerfile: Dockerfile
+    ports:
+      - "8500:8500"
+    networks:
+      - currency-network
+    depends_on:
+      - naming-server
+    environment:
+      EUREKA.CLIENT.SERVICE-URL.DEFAULTZONE: http://naming-server:8761/eureka
+
+  crypto-exchange:
+    image: elenadejanovic/crypto-exchange:latest
+    build:
+      context: ./crypto-exchange
+      dockerfile: Dockerfile
+    ports:
+      - "8400:8400"
+    networks:
+      - currency-network
+    depends_on:
+      - naming-server
+    environment:
+      EUREKA.CLIENT.SERVICE-URL.DEFAULTZONE: http://naming-server:8761/eureka
+
+  crypto-wallet:
+    image: elenadejanovic/crypto-wallet:latest
+    build:
+      context: ./crypto-wallet
+      dockerfile: Dockerfile
+    ports:
+      - "8300:8300"
     networks:
       - currency-network
     depends_on:
@@ -55,8 +115,36 @@ services:
     networks:
       - currency-network
 
+  trade-service:
+    image: elenadejanovic/trade-service:latest
+    build:
+      context: ./trade-service
+      dockerfile: Dockerfile
+    ports:
+      - "8600:8600"
+    networks:
+      - currency-network
+    depends_on:
+      - naming-server
+    environment:
+      EUREKA.CLIENT.SERVICE-URL.DEFAULTZONE: http://naming-server:8761/eureka
+
+  transfer-service:
+    image: elenadejanovic/transfer-service:latest
+    build:
+      context: ./transfer-service
+      dockerfile: Dockerfile
+    ports:
+      - "8700:8700"
+    networks:
+      - currency-network
+    depends_on:
+      - naming-server
+    environment:
+      EUREKA.CLIENT.SERVICE-URL.DEFAULTZONE: http://naming-server:8761/eureka
+
   users-service:
-    image: elenadejanovic/user-service:latest
+    image: elenadejanovic/users-service:latest
     build:
       context: ./users-service
       dockerfile: Dockerfile
@@ -69,22 +157,5 @@ services:
     environment:
       EUREKA.CLIENT.SERVICE-URL.DEFAULTZONE: http://naming-server:8761/eureka
 
-  api-gateway:
-    image: elenadejanovic/api-gateway:latest
-    build:
-      context: ./api-gateway
-      dockerfile: Dockerfile
-    ports:
-      - "8765:8765"
-    networks:
-      - currency-network
-    depends_on:
-      - naming-server
-      - users-service
-      - bank-account
-      - currency-exchange
-      - currency-conversion
-    environment:
-      EUREKA.CLIENT.SERVICE-URL.DEFAULTZONE: http://naming-server:8761/eureka
 networks:
   currency-network:
