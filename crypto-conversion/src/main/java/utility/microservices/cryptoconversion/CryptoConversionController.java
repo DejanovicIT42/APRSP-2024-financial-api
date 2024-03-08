@@ -1,6 +1,7 @@
 package utility.microservices.cryptoconversion;
 
 import feign.FeignException;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,6 +38,7 @@ public class CryptoConversionController {
     }
 
     @PostMapping()
+    @RateLimiter(name = "default")
     public ResponseEntity<CryptoWalletDto> getConversion(@RequestParam String from,
                                                          @RequestParam String to,
                                                          @RequestParam BigDecimal quantity,

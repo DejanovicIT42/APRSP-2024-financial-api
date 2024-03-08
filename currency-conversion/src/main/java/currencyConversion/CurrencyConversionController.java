@@ -5,6 +5,7 @@ import currencyConversion.proxy.BankAccountDto;
 import currencyConversion.proxy.BankAccountProxy;
 import currencyConversion.proxy.CurrencyExchangeProxy;
 import feign.FeignException;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,7 @@ public class CurrencyConversionController {
 
     //localhost:8100/currency-conversion/from/EUR/to/RSD/quantity/100
     @PostMapping()
+    @RateLimiter(name = "default")
     public ResponseEntity<BankAccountDto> getConversion(@RequestParam String from,
                                                         @RequestParam String to,
                                                         @RequestParam BigDecimal quantity,

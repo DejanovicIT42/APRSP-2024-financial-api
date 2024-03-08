@@ -7,7 +7,7 @@ import utility.microservices.transferservice.TransferFiatValueDto;
 
 @FeignClient(name = "bank-account")
 public interface BankAccountProxy {
-    @GetMapping("/bank-account/[email}")
+    @GetMapping("/bank-account/{email}")
     ResponseEntity<BankAccountDto> getBankAccount(@PathVariable String email);
 
     @PutMapping("/bank-account/transfer")
